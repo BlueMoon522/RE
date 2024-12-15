@@ -1,0 +1,32 @@
+html,
+body {
+  height: 100%;
+  /* Ensure the body takes up full height */
+  margin: 0;
+  /* Remove default margins */
+  display: flex;
+  /* Use Flexbox on the body */
+  justify-content: center;
+  /* Center horizontally */
+  align-items: center;
+  /* Center vertically */
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* Center items inside the container horizontally */
+  align-items: center;
+  /* Center items inside the container vertically */
+  height: 80vh;
+  /* Height is 20% of the viewport height */
+  width: 80vw;
+  /* Width is 50% of the viewport width */
+  border: 1px solid #ccc;
+  /* Optional for visualization */
+  max-width: 800px;
+  /* Optional: limit the maximum size */
+  max-height: 800px;
+  /* Optional: limit the maximum size */
+}
