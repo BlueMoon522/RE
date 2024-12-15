@@ -1,1 +1,1 @@
-Just a way/reason to study.
+Just a something to study.
