@@ -1,1 +1,1 @@
-Just a something to study.
+Just another day another project that will not be completed.

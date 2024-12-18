@@ -1,7 +1,7 @@
 {
-  "name": "re-vision",
+  "name": "RE",
   "version": "0.1.0",
-  "description": "Just a way for me to get to study anything.",
+  "description": "Just a dumb plan",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

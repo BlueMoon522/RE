@@ -10,7 +10,7 @@ app.use(
   cors({
     origin: "http://localhost:5173", //if u dont set origin it doesnot work??IDK why
     credentials: true, //to send and receive cookie
-  }),
+  })
 );
 
 app.use(express.json());
