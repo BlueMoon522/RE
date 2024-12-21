@@ -8,7 +8,7 @@ import Signup from "./pages/signup/page.tsx";
 function App() {
   return (
     <Layout>
-      <div className="flex items-center justify-center h-screen">
+      <div>
         <Routes>
           <Route path="/" element=<Home /> />
           <Route path="/signup" element=<Signup /> />
