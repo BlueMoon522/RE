@@ -2,11 +2,17 @@ import mongoose from "mongoose";
 
 const mainSchema = new mongoose.Schema(
   {
-    // user: {
-    //   type: mongoose.Schema.Types.ObjectId,
-    //   ref: "user",
-    //   required: true,
-    // },
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "user",
+      required: true,
+    },
+    subtopics: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "content",
+      },
+    ],
     title: {
       type: String,
     },

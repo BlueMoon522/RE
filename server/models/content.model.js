@@ -2,20 +2,22 @@ import mongoose from "mongoose";
 
 const contentSchema = new mongoose.Schema(
   {
-    // topic: {
-    //   type: mongoose.Schema.Types.ObjectId,
-    //   ref: "topic",
-    //   required: true,
-    // },
+    topic: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "topic",
+      required: true,
+    },
     title: {
       type: String,
     },
     description: {
       type: String,
     },
-    images: {
-      type: String,
-    },
+    images: [
+      {
+        type: String,
+      },
+    ],
     tips: {
       type: String,
     },
@@ -29,7 +31,6 @@ const contentSchema = new mongoose.Schema(
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "content",
-        required: true,
       },
     ],
   },
