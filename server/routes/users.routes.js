@@ -1,10 +1,15 @@
 import express from "express";
-import { getInfo, userCreate } from "../controllers/user.controller";
-import { protectedRoutes } from "../middleware/protectedRoutes";
+import {
+  getInfo,
+  loginUser,
+  userCreate,
+} from "../controllers/user.controller.js";
+import { protectedRoutes } from "../middleware/protectedRoutes.js";
 
-const router = express();
+const router = express.Router();
 
-router.post("/", userCreate);
+router.post("/signup", userCreate);
+router.post("/login", loginUser);
 router.get("/info", protectedRoutes, getInfo);
 
 export default router;

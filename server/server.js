@@ -1,21 +1,25 @@
 import express from "express";
 import dotenv from "dotenv";
 import connectMongoDB from "./connectDB/connectDB.js";
-import { userCreate } from "./controllers/user.controller.js";
-import cors from "cors";
+import userRoute from "./routes/users.routes.js";
+import cookieParser from "cookie-parser";
+import createTopic from "./routes/topic.routes.js";
+// import cors from "cors";
 
 dotenv.config();
 const app = express();
-app.use(
-  cors({
-    origin: "http://localhost:5173", //if u dont set origin it doesnot work??IDK why
-    credentials: true, //to send and receive cookie
-  })
-);
+// app.use(
+//   cors({
+//     origin: "http://localhost:5173", //if u dont set origin it doesnot work??IDK why
+//     credentials: true, //to send and receive cookie
+//   }),
+// );
 
+app.use(cookieParser());
 app.use(express.json());
 
-app.use("/api/user", userCreate);
+app.use("/api/user", userRoute);
+app.use("/api/user/post", createTopic);
 
 const PORT = process.env.PORT;
 

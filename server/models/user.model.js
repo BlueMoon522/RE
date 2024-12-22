@@ -4,15 +4,15 @@ const userSchema = new mongoose.Schema(
   {
     username: {
       type: String,
+      unique: true,
     },
-    authToken: {
+    password: {
       type: String,
       required: true,
-      unique: true,
     },
   },
   { timestamps: true },
 );
 
-const user = mongoose.model("User", userSchema);
+const user = mongoose.model("Re-User", userSchema);
 export default user;
