@@ -88,8 +88,6 @@ const Submit: React.FC = () => {
         isPanelOpen={isPanelOpen}
         onClose={() => setIsPanelOpen(false)}
       />
-
-      {/* Footer Section */}
     </div>
   );
 };
