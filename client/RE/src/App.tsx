@@ -3,8 +3,8 @@ import Home from "./pages/home/Home";
 import About from "./pages/about/About";
 import Login from "./pages/login/page.tsx";
 import Signup from "./pages/signup/page.tsx";
-import InputFormPage from "./pages/createsessions/page.tsx";
-import Submit from "./pages/submitsection/page.tsx";
+import InputFormPage from "./pages/create/page.tsx";
+import Submit from "./pages/submit/page.tsx";
 
 function App() {
   return (
