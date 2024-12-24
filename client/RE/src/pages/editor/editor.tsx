@@ -21,15 +21,16 @@ const EditorPage = () => {
   };
 
   const handleQuillChange = (htmlContent: string) => {
-    // Replace the custom <image = <url>> format with <img src="<url>" />
-    const processedContent = htmlContent.replace(
-      /<image\s*=\s*([^\s>]+)>/g, // Match the <image = <url>> format
-      (match, url) => {
-        // Replace it with the <img src="<url>" />
-        return `<img src="${url}" style="max-width: 100%; height: auto;" />`;
-      },
-    );
+    const processedContent = htmlContent
+      // Convert custom <image = <url>> format
+      .replace(/<image\s*=\s*([^\s>]+)>/g, (_, url) => `<img src="${url}" />`)
+      // Convert plain URLs to <img> tags (skip URLs already inside <img> tags)
+      .replace(
+        /(?<!<img\s[^>]*src=["'])(\bhttps?:\/\/[^\s<]+)/g,
+        (url) => `<img src="${url}" />`,
+      );
 
+    console.log(processedContent);
     setContent(processedContent);
   };
 
