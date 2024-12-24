@@ -4,6 +4,9 @@ import path from "path";
 
 // https://vite.dev/config/
 export default defineConfig({
+  optimizeDeps: {
+    include: ["quill-image-resize-module-react"],
+  },
   plugins: [react()],
   resolve: {
     alias: {
