@@ -1,38 +1,67 @@
 import React, { useState } from "react";
-import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import Editor from "@/components/editor";
+
+interface Question {
+  tips: string;
+  question: string;
+  answer: string;
+}
+
+interface Content {
+  title: string;
+  description: string;
+  questions: Question[];
+}
 
 const InputFormPage: React.FC = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [entries, setEntries] = useState<
-    { question: string; answer: string; hint: string }[]
-  >([]);
+  const [questions, setQuestions] = useState([
+    { question: "", answer: "", tips: "" },
+  ]);
+  const [loading, setLoading] = useState(true);
+  const [content, setContent] = useState<Content | any>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    alert(
-      `Title: ${title}\nDescription: ${description}\nEntries: ${JSON.stringify(entries)}`,
-    );
+  //to add the questions which is array of objects
+
+  const handleAddQuestion = () => {
+    setQuestions([...questions, { question: "", answer: "", tips: "" }]);
   };
-
-  const addEntry = () => {
-    setEntries([...entries, { question: "", answer: "", hint: "" }]);
+  const handleRemoveQuestion = (index: number) => {
+    setQuestions(questions.filter((_, i) => i !== index));
   };
-
-  const removeEntry = (index: number) => {
-    setEntries(entries.filter((_, i) => i !== index));
-  };
-
-  const updateEntry = (
+  const handleQuestionChange = (
     index: number,
-    field: "question" | "answer" | "hint",
+    field: string,
     value: string,
   ) => {
-    const updatedEntries = [...entries];
-    updatedEntries[index][field] = value;
-    setEntries(updatedEntries);
+    const updatedQuestions = questions.map((q, i) =>
+      i === index ? { ...q, [field]: value } : q,
+    );
+    setQuestions(updatedQuestions);
+  };
+
+  //post in in the url
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const form = { title, description, questions };
+    try {
+      const response = await fetch(
+        "http://localhost:3000/api/content/6767f8b70e10133f78d34fde", //add an ${id} later
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(form),
+        },
+      );
+      const result = await response.json();
+      console.log("Data posted successfully:", result);
+    } catch (error) {
+      console.error("Error posting data:", error);
+    }
   };
 
   return (
@@ -58,7 +87,8 @@ const InputFormPage: React.FC = () => {
           </div>
 
           <div>
-            <Editor />
+            {/*This is a description section*/}
+            <Editor setDescription={setDescription} />
           </div>
 
           {/* Dynamic Entries for Questions, Answers, and Hints */}
@@ -66,7 +96,7 @@ const InputFormPage: React.FC = () => {
             <h2 className="text-lg font-medium text-gray-700">
               Questions, Answers, and Hints
             </h2>
-            {entries.map((entry, index) => (
+            {questions.map((entry, index) => (
               <div key={index} className="mt-4 space-y-4">
                 <div>
                   <label
@@ -80,7 +110,7 @@ const InputFormPage: React.FC = () => {
                     id={`question-${index}`}
                     value={entry.question}
                     onChange={(e) =>
-                      updateEntry(index, "question", e.target.value)
+                      handleQuestionChange(index, "question", e.target.value)
                     }
                     className="mt-2 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-lg"
                     placeholder="Enter question"
@@ -98,31 +128,34 @@ const InputFormPage: React.FC = () => {
                     id={`answer-${index}`}
                     value={entry.answer}
                     onChange={(e) =>
-                      updateEntry(index, "answer", e.target.value)
+                      handleQuestionChange(index, "answer", e.target.value)
                     }
                     className="mt-2 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-lg"
                     placeholder="Enter answer"
                   />
                 </div>
+
                 <div>
                   <label
-                    htmlFor={`hint-${index}`}
+                    htmlFor={`tips-${index}`}
                     className="block text-lg font-medium text-gray-700"
                   >
-                    Hint
+                    Tips/Hints
                   </label>
                   <input
                     type="text"
-                    id={`hint-${index}`}
-                    value={entry.hint}
-                    onChange={(e) => updateEntry(index, "hint", e.target.value)}
+                    id={`tips-${index}`}
+                    value={entry.tips}
+                    onChange={(e) =>
+                      handleQuestionChange(index, "tips", e.target.value)
+                    }
                     className="mt-2 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-lg"
-                    placeholder="Enter hint"
+                    placeholder="Enter tip for the answer"
                   />
                 </div>
                 <button
                   type="button"
-                  onClick={() => removeEntry(index)}
+                  onClick={() => handleRemoveQuestion(index)}
                   className="bg-red-500 text-white px-4 py-2 rounded-lg mt-4"
                 >
                   - Remove Entry
@@ -131,7 +164,7 @@ const InputFormPage: React.FC = () => {
             ))}
             <button
               type="button"
-              onClick={addEntry}
+              onClick={handleAddQuestion}
               className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg"
             >
               + Add Entry

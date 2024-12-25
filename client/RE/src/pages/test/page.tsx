@@ -1,13 +1,25 @@
 import React, { useEffect, useState } from "react";
 
+interface Question {
+  tips: string;
+  question: string;
+  answer: string;
+}
+
+interface Content {
+  title: string;
+  description: string;
+  questions: Question[];
+}
+
 const Test: React.FC = () => {
-  const [data, setData] = useState([]);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [tips, setTips] = useState("");
   const [questions, setQuestions] = useState([
     { question: "", answer: "", tips: "" },
   ]);
+  const [loading, setLoading] = useState(true);
+  const [content, setContent] = useState<Content | any>(null);
 
   //to add the questions which is array of objects
 
@@ -49,13 +61,20 @@ const Test: React.FC = () => {
   };
   //get from the post
   useEffect(() => {
-    // Fetch data from the API
-    fetch("http://localhost:3000/api/content/") // Replace with your GET route
+    // Fetch content data by ID
+    fetch("http://localhost:3000/api/content/")
       .then((response) => response.json())
-      .then((data) => setData(data))
-      .catch((error) => console.error("Error fetching data:", error));
+      .then((data) => {
+        setContent(data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching content:", error);
+        setLoading(false);
+      });
   }, []);
-
+  if (loading) return <p>Loading...</p>;
+  if (!content) return <p>No content found!</p>;
   return (
     <>
       <form onSubmit={handleSubmit}>
@@ -111,11 +130,11 @@ const Test: React.FC = () => {
         </div>
         <button type="submit">Submit</button>
       </form>
-
+      {/*Part where the got data is processed*/}
       <div>
         <h1>Data from API</h1>
         <ul>
-          {data.map((item, index) => (
+          {content.map((item, index) => (
             <li key={index}>{JSON.stringify(item)}</li>
           ))}
         </ul>

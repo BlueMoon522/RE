@@ -6,11 +6,13 @@ import ImageResize from "quill-resize-image";
 // Register the image resize module for Quill
 Quill.register("modules/imageResize", ImageResize);
 
-const Editor = () => {
+interface EditorProps {
+  setDescription: (value: string) => void;
+}
+
+const Editor: React.FC<EditorProps> = ({ setDescription }) => {
   const [content, setContent] = useState<string>(""); // Editor content
-  const [savedContents, setSavedContents] = useState<
-    { _id: string; content: string }[]
-  >([]); // Saved data
+  // Saved data
 
   // Quill editor configuration with the image resize module
   const modules = {
@@ -35,7 +37,9 @@ const Editor = () => {
         (url) => `<img src="${url}" />`,
       );
 
+    console.log(processedContent);
     setContent(processedContent); // Update state with processed content
+    setDescription(processedContent);
   };
 
   // Fetch saved contents on component load
@@ -44,6 +48,10 @@ const Editor = () => {
     <div className="p-5">
       {/* Header */}
       <h1 className="text-xl font-bold mb-4">Description</h1>
+      <p>
+        If u want to delete an image.Press backspace,after putting editor cursor
+        ,right behind the image.
+      </p>
 
       {/* React Quill Editor */}
       <ReactQuill
