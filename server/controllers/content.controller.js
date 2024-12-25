@@ -4,7 +4,7 @@ import Topic from "../models/topic.model.js";
 //post method
 export const postContent = async (req, res) => {
   console.log("Inside the postContent function");
-  const { title, description, tips, questions } = req.body;
+  const { title, description, questions } = req.body;
   // Hash a password
   try {
     const topicId = req.params.id;
@@ -16,7 +16,6 @@ export const postContent = async (req, res) => {
       topicId: topicId,
       title,
       description,
-      tips,
       questions,
     });
 
@@ -26,6 +25,21 @@ export const postContent = async (req, res) => {
     } else {
       return res.status(400).json({ error: "invalid data" });
     }
+  } catch (error) {
+    return res.status(500).json({ error: "Server Error" });
+  }
+};
+
+//get method
+export const getContent = async (req, res) => {
+  console.log("Inside the getContent function");
+  try {
+    const contents = await Content.find();
+    if (!contents) {
+      return res.status(404).json({ message: "No content found" });
+    }
+    console.log(contents);
+    return res.status(201).json(contents);
   } catch (error) {
     return res.status(500).json({ error: "Server Error" });
   }

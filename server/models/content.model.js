@@ -14,6 +14,9 @@ const questionSchema = new mongoose.Schema({
       },
     },
   },
+  tips: {
+    type: String,
+  },
 });
 
 const contentSchema = new mongoose.Schema(
@@ -27,9 +30,6 @@ const contentSchema = new mongoose.Schema(
       type: String,
     },
     description: {
-      type: String,
-    },
-    tips: {
       type: String,
     },
     questions: {
