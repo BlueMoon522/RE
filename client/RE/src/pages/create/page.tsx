@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import Editor from "@/components/editor";
 
 const InputFormPage: React.FC = () => {
   const [title, setTitle] = useState("");
@@ -45,19 +46,7 @@ const InputFormPage: React.FC = () => {
           </div>
 
           <div>
-            <label
-              htmlFor="description"
-              className="block text-lg font-medium text-gray-700"
-            >
-              Description
-            </label>
-            <ReactQuill
-              value={description}
-              onChange={setDescription}
-              modules={modules}
-              placeholder="Write your description and embed images here..."
-              className="mt-2"
-            />
+            <Editor />
           </div>
 
           <div>

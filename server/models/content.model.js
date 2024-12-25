@@ -1,8 +1,24 @@
 import mongoose from "mongoose";
 
+const questionSchema = new mongoose.Schema({
+  question: {
+    type: String,
+    required: false,
+  },
+  answer: {
+    type: String,
+    validate: {
+      validator: function (value) {
+        //if part 1 is provided ,part 2 must be provided
+        return !this.part1 || (this.part1 && value);
+      },
+    },
+  },
+});
+
 const contentSchema = new mongoose.Schema(
   {
-    topic: {
+    topicId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "topic",
       required: true,
@@ -13,20 +29,20 @@ const contentSchema = new mongoose.Schema(
     description: {
       type: String,
     },
-    images: [
-      {
-        type: String,
-      },
-    ],
     tips: {
       type: String,
     },
-    question: {
-      type: String,
+    questions: {
+      type: [questionSchema],
     },
-    answer: {
-      type: String,
-    },
+    // question: {
+    //   type: String,
+    // },
+    // answer: [
+    //   {
+    //     type: String,
+    //   },
+    // ],
     subtopic: [
       {
         type: mongoose.Schema.Types.ObjectId,

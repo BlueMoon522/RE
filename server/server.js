@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 import createTopic from "./routes/topic.routes.js";
 import editorRoutes from "./routes/editorRoutes.js";
 import cors from "cors";
+import contentRoutes from "./routes/content.routes.js";
 
 dotenv.config();
 const app = express();
@@ -22,6 +23,7 @@ app.use(express.json());
 app.use("/api/user", userRoute);
 app.use("/api/user/post", createTopic);
 app.use("/api/editor", editorRoutes);
+app.use("/api/content", contentRoutes);
 
 const PORT = process.env.PORT;
 
