@@ -12,6 +12,6 @@ const router = express.Router();
 router.post("/", protectedRoutes, topicCreate);
 router.post("/:id", protectedRoutes, updateTopic);
 router.get("/", protectedRoutes, userTopics);
-router.delete("/:id", deleteTopic);
+router.delete("/:id", protectedRoutes, deleteTopic);
 
 export default router;
