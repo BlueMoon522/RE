@@ -30,12 +30,28 @@ export const postContent = async (req, res) => {
   }
 };
 
-//get method
-export const getContent = async (req, res) => {
+//get  all the contentmethod
+export const getAllContent = async (req, res) => {
   console.log("Inside the getContent function");
   try {
     const contents = await Content.find();
     if (!contents) {
+      return res.status(404).json({ message: "No content found" });
+    }
+    console.log(contents);
+    return res.status(201).json(contents);
+  } catch (error) {
+    return res.status(500).json({ error: "Server Error" });
+  }
+};
+
+//get content based on content id
+export const getContent = async (req, res) => {
+  console.log("Inside the getContent function");
+  try {
+    const ID = req.params.id;
+    const contents = await Content.findById(ID);
+    if (!contents || !ID) {
       return res.status(404).json({ message: "No content found" });
     }
     console.log(contents);
