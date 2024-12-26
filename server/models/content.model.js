@@ -10,7 +10,8 @@ const questionSchema = new mongoose.Schema({
     validate: {
       validator: function (value) {
         //if part 1 is provided ,part 2 must be provided
-        return !this.part1 || (this.part1 && value);
+        return !this.question || (this.question && value);
+        // return !this.part1 || (this.part1 && value);
       },
     },
   },
@@ -43,12 +44,13 @@ const contentSchema = new mongoose.Schema(
     //     type: String,
     //   },
     // ],
-    subtopic: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "content",
-      },
-    ],
+    // maybe if i feel like it i will make this
+    // subtopic: [
+    //   {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: "content",
+    //   },
+    // ],
   },
   { timestamps: true },
 );

@@ -47,5 +47,44 @@ export const userTopics = async (req, res) => {
     return res.status(500).json({ error: "Server Error" });
   }
 };
+//update the topic
+export const updateTopic = async (req, res) => {
+  console.log("In update Topic function");
+  try {
+    let { title, content, visibility } = req.body;
+    const ID = req.params.id;
+    //finding content by id
+    let topic = await Topic.findById(ID);
+    if (!topic || !ID)
+      return res.status(404).json({ message: "Content not found" });
+
+    topic.user = topic.user;
+    topic.title = title || topic.title;
+    topic.content = content || topic.description;
+    topic.visibility = visibility || topic.visibility;
+
+    topic = await topic.save();
+
+    return res.status(200).json(topic);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "ServerSide error" });
+  }
+};
 
 //delete the topic
+export const deleteTopic = async (req, res) => {
+  console.log("In delete topic function");
+  try {
+    const ID = req.params.id;
+    const topic = await Topic.findById(req.params.id);
+    if (!topic) {
+      return res.staus(404).json({ error: "Post not found" });
+    }
+    await Topic.findByIdAndDelete(ID);
+    res.status(200).json({ message: "Deletion successful" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};

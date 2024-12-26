@@ -1,10 +1,17 @@
 import express from "express";
-import { topicCreate, userTopics } from "../controllers/topic.controller.js";
+import {
+  deleteTopic,
+  topicCreate,
+  updateTopic,
+  userTopics,
+} from "../controllers/topic.controller.js";
 import { protectedRoutes } from "../middleware/protectedRoutes.js";
 
 const router = express.Router();
 
 router.post("/", protectedRoutes, topicCreate);
+router.post("/:id", protectedRoutes, updateTopic);
 router.get("/", protectedRoutes, userTopics);
+router.delete("/:id", deleteTopic);
 
 export default router;

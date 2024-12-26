@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import connectMongoDB from "./connectDB/connectDB.js";
 import userRoute from "./routes/users.routes.js";
 import cookieParser from "cookie-parser";
-import createTopic from "./routes/topic.routes.js";
+import topicRoutes from "./routes/topic.routes.js";
 import editorRoutes from "./routes/editorRoutes.js";
 import cors from "cors";
 import contentRoutes from "./routes/content.routes.js";
@@ -21,7 +21,7 @@ app.use(cookieParser());
 app.use(express.json());
 
 app.use("/api/user", userRoute);
-app.use("/api/user/post", createTopic);
+app.use("/api/user/post", topicRoutes);
 app.use("/api/editor", editorRoutes);
 app.use("/api/content", contentRoutes);
 
