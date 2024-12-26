@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom"; // Import Link from react-router-dom
 
 const Sidebar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -13,7 +14,15 @@ const Sidebar = () => {
         Sidebar
       </div>
       <ul className="flex-grow">
-        <li className="p-4 hover:bg-gray-700 cursor-pointer">Home</li>
+        <li className="p-4 hover:bg-gray-700 cursor-pointer">
+          <Link to="/">Home</Link>
+        </li>
+        <li className="p-4 hover:bg-gray-700 cursor-pointer">
+          <Link to="/create">Create</Link>
+        </li>
+        <li className="p-4 hover:bg-gray-700 cursor-pointer">
+          <Link to="/quizzes">Quizzes</Link>
+        </li>
         <li>
           <div
             className="p-4 hover:bg-gray-700 cursor-pointer flex justify-between items-center"
@@ -42,7 +51,9 @@ const Sidebar = () => {
                   key={index}
                   className="p-4 pl-8 hover:bg-gray-600 cursor-pointer"
                 >
-                  {topic}
+                  <Link to={`/topic/${topic.toLowerCase().replace(" ", "-")}`}>
+                    {topic}
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -50,7 +61,7 @@ const Sidebar = () => {
         </li>
       </ul>
       <div className="p-4 hover:bg-gray-700 cursor-pointer border-t border-gray-700">
-        Logout
+        <Link to="/logout">Logout</Link>
       </div>
     </div>
   );
