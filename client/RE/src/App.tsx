@@ -27,7 +27,6 @@ function App() {
           <Route path="/title" element={<UserPostPage />} />
           <Route path="/editor" element={<EditorPage />} />
           <Route path="/submit" element={<Submit />} />
-          <Route path="/create" element={<Create />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/about" element={<Edit />} />

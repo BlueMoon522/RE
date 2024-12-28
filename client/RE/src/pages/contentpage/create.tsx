@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "react-quill/dist/quill.snow.css";
 import Editor from "@/components/editor";
 
@@ -8,81 +8,61 @@ interface Question {
   answer: string;
 }
 
-interface Content {
+interface Topic {
+  _id?: string;
   title: string;
   description: string;
   questions: Question[];
 }
 
 interface InputFormPageProps {
-  topicId: string;
-  onClose: () => void;
+  topicId: string | null; // Null for creating new content
+  initialData?: Topic | null; // Optional data for pre-filling the form when editing
+  onSubmit: (updatedTopic: Topic) => Promise<void>; // Handler for submission
+  onClose: () => void; // Handler for closing the form
 }
-const InputFormPage: React.FC<InputFormPageProps> = ({ topicId, onClose }) => {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [questions, setQuestions] = useState<Question[]>([
-    { question: "", answer: "", tips: "" },
-  ]);
+const InputFormPage: React.FC<InputFormPageProps> = ({
+  topicId,
+  initialData,
+  onSubmit,
+  onClose,
+}) => {
+  const [title, setTitle] = useState(initialData?.title || ""); // Prefill for updates
+  const [description, setDescription] = useState(
+    initialData?.description || "",
+  ); // Prefill for updates
+  const [questions, setQuestions] = useState<Question[]>(
+    initialData?.questions || [{ question: "", answer: "", tips: "" }],
+  );
 
-  // Handle add/remove questions
-  const handleAddQuestion = () => {
-    setQuestions([...questions, { question: "", answer: "", tips: "" }]);
-  };
+  // Differentiate between "Create" and "Edit" mode
+  const isEditMode = Boolean(initialData && initialData._id);
 
-  const handleRemoveQuestion = (index: number) => {
-    setQuestions(questions.filter((_, i) => i !== index));
-  };
-
-  const handleQuestionChange = (
-    index: number,
-    field: keyof Question,
-    value: string,
-  ) => {
-    const updatedQuestions = questions.map((q, i) =>
-      i === index ? { ...q, [field]: value } : q,
-    );
-    setQuestions(updatedQuestions);
-  };
-
-  // Submit form with the correct topicId
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const form = { title, description, questions };
-    try {
-      const response = await fetch(
-        `http://localhost:3000/api/content/${topicId}`, // Correctly using topicId for the request
-        {
-          method: "POST",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(form),
-        },
-      );
+    const form: Topic = {
+      _id: initialData?._id || "", // Use existing topic ID if editing
+      title,
+      description,
+      questions,
+    };
 
-      if (response.ok) {
-        console.log("Data posted successfully:", await response.json());
-        onClose(); // Close the modal on successful submission
-      } else {
-        console.error("Failed to post data:", await response.text());
-      }
-    } catch (error) {
-      console.error("Error posting data:", error);
-    }
+    onSubmit(form); // Call the parent onSubmit handler with the form data
+    onClose(); // Close the form
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-      <div className="w-full max-w-3xl bg-white p-10 rounded-lg shadow-lg relative">
+    <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
+      <div className="relative w-full max-w-3xl bg-white p-10 rounded-lg shadow-lg max-h-[90vh] overflow-y-auto">
         <button
           className="absolute top-4 right-4 bg-red-500 text-white p-2 rounded-full"
           onClick={onClose}
         >
           ✕
         </button>
-        <h1 className="text-3xl font-bold mb-6 text-center">Add Content</h1>
+        <h1 className="text-3xl font-bold mb-6 text-center">
+          {isEditMode ? "Edit Content" : "Add Content"}
+        </h1>
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Title */}
           <div>
@@ -110,17 +90,19 @@ const InputFormPage: React.FC<InputFormPageProps> = ({ topicId, onClose }) => {
             >
               Description
             </label>
-            <Editor setDescription={setDescription} />
+            <Editor
+              setDescription={setDescription}
+              initialValue={description}
+            />
           </div>
 
-          {/* Questions Section */}
+          {/* Questions */}
           <div>
             <h2 className="text-lg font-medium text-gray-700">
               Questions, Answers, and Hints
             </h2>
             {questions.map((entry, index) => (
               <div key={index} className="mt-4 space-y-4 border p-4 rounded-lg">
-                {/* Question */}
                 <div>
                   <label
                     htmlFor={`question-${index}`}
@@ -133,13 +115,16 @@ const InputFormPage: React.FC<InputFormPageProps> = ({ topicId, onClose }) => {
                     id={`question-${index}`}
                     value={entry.question}
                     onChange={(e) =>
-                      handleQuestionChange(index, "question", e.target.value)
+                      setQuestions((qs) =>
+                        qs.map((q, i) =>
+                          i === index ? { ...q, question: e.target.value } : q,
+                        ),
+                      )
                     }
                     className="mt-2 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-lg"
                     placeholder="Enter question"
                   />
                 </div>
-
                 {/* Answer */}
                 <div>
                   <label
@@ -153,13 +138,16 @@ const InputFormPage: React.FC<InputFormPageProps> = ({ topicId, onClose }) => {
                     id={`answer-${index}`}
                     value={entry.answer}
                     onChange={(e) =>
-                      handleQuestionChange(index, "answer", e.target.value)
+                      setQuestions((qs) =>
+                        qs.map((q, i) =>
+                          i === index ? { ...q, answer: e.target.value } : q,
+                        ),
+                      )
                     }
                     className="mt-2 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-lg"
                     placeholder="Enter answer"
                   />
                 </div>
-
                 {/* Tips */}
                 <div>
                   <label
@@ -173,35 +161,32 @@ const InputFormPage: React.FC<InputFormPageProps> = ({ topicId, onClose }) => {
                     id={`tips-${index}`}
                     value={entry.tips}
                     onChange={(e) =>
-                      handleQuestionChange(index, "tips", e.target.value)
+                      setQuestions((qs) =>
+                        qs.map((q, i) =>
+                          i === index ? { ...q, tips: e.target.value } : q,
+                        ),
+                      )
                     }
                     className="mt-2 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-lg"
                     placeholder="Enter tip for the answer"
                   />
                 </div>
-
-                {/* Remove Button */}
-                <button
-                  type="button"
-                  onClick={() => handleRemoveQuestion(index)}
-                  className="bg-red-500 text-white px-4 py-2 rounded-lg mt-4"
-                >
-                  - Remove Question
-                </button>
               </div>
             ))}
-
-            {/* Add Question Button */}
             <button
               type="button"
-              onClick={handleAddQuestion}
+              onClick={() =>
+                setQuestions([
+                  ...questions,
+                  { question: "", answer: "", tips: "" },
+                ])
+              }
               className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg"
             >
               + Add Question
             </button>
           </div>
 
-          {/* Submit Button */}
           <button
             type="submit"
             className="w-full bg-blue-500 text-white py-3 px-4 rounded-lg text-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-300"
@@ -213,3 +198,5 @@ const InputFormPage: React.FC<InputFormPageProps> = ({ topicId, onClose }) => {
     </div>
   );
 };
+
+export default InputFormPage;

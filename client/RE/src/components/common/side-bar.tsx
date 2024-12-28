@@ -41,9 +41,6 @@ const Sidebar = () => {
           <Link to="/">Home</Link>
         </li>
         <li className="p-4 hover:bg-gray-700 cursor-pointer">
-          <Link to="/create">Create</Link>
-        </li>
-        <li className="p-4 hover:bg-gray-700 cursor-pointer">
           <Link to="/submit">Quizzes</Link>
         </li>
         <li>

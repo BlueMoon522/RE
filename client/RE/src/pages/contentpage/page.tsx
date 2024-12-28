@@ -1,26 +1,29 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import InputFormPage from "../create/page.tsx";
+import InputFormPage from "./create.tsx";
+
+interface Question {
+  tips: string;
+  question: string;
+  answer: string;
+  _id: string;
+}
 
 interface Topic {
   _id: string;
   title: string;
   description: string; // HTML description
-  questions: {
-    question: string;
-    answer: string;
-    tips: string;
-    _id: string;
-  }[];
+  questions: Question[];
 }
 
 const ContentPage: React.FC = () => {
-  const { id } = useParams<{ id: string }>(); // This will be the main topicId from URL.
+  const { id } = useParams<{ id: string }>();
   const [topics, setTopics] = useState<Topic[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [activeTopicId, setActiveTopicId] = useState<string | null>(null);
+  const [activeTopicId, setActiveTopicId] = useState<string | null>(null); // Tracks which topic is active
   const [showForm, setShowForm] = useState<boolean>(false); // Track form visibility
   const [currentTopicId, setCurrentTopicId] = useState<string | null>(null); // Track selected topic ID
+  const [formInitialData, setFormInitialData] = useState<Topic | null>(null); // Track initial data for the form
 
   useEffect(() => {
     const fetchContent = async () => {
@@ -47,17 +50,60 @@ const ContentPage: React.FC = () => {
   }, [id]);
 
   const handleTitleClick = (topicId: string) => {
-    setActiveTopicId(activeTopicId === topicId ? null : topicId); // Toggle display of the topic content
+    setActiveTopicId(activeTopicId === topicId ? null : topicId); // Toggle content visibility
   };
 
-  const handleAddContentClick = (topicId: string) => {
-    setCurrentTopicId(topicId);
-    setShowForm(true); // Show the input form for the selected topic
+  const handleAddContentClick = () => {
+    setCurrentTopicId(null); // Set to null for new content creation
+    setFormInitialData(null); // Clear initial data
+    setShowForm(true); // Show the input form
   };
 
+  const handleEditContentClick = (topic: Topic) => {
+    setCurrentTopicId(topic._id); // Set the current topic ID for editing
+    setFormInitialData(topic); // Pass the topic data as initial data
+    setShowForm(true); // Show the input form
+  };
+
+  const handleUpdateContent = async (updatedTopic: Topic) => {
+    try {
+      const endpoint = updatedTopic._id
+        ? `http://localhost:3000/api/content/update/${updatedTopic._id}`
+        : `http://localhost:3000/api/content/${id}`; // Use parent topic ID for new content
+
+      const response = await fetch(endpoint, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedTopic),
+      });
+
+      if (response.ok) {
+        const updatedData = await response.json();
+        setTopics((prevTopics) => {
+          if (updatedTopic._id) {
+            // Update existing content
+            return prevTopics.map((topic) =>
+              topic._id === updatedTopic._id ? updatedData : topic,
+            );
+          } else {
+            // Add new content
+            return [...prevTopics, updatedData];
+          }
+        });
+        setShowForm(false); // Close the form
+      } else {
+        console.error("Failed to save content:", await response.text());
+      }
+    } catch (error) {
+      console.error("Error saving content:", error);
+    }
+  };
   return (
     <div className="flex flex-col items-center min-h-screen bg-gray-100 py-6">
-      <h1 className="text-3xl font-bold mb-6 text-gray-800">Topics</h1>
+      <h1 className="text-3xl font-bold mb-6 text-gray-800">Topic Details</h1>
       {error ? (
         <div className="text-red-500 text-lg">{error}</div>
       ) : (
@@ -67,15 +113,23 @@ const ContentPage: React.FC = () => {
               key={topic._id}
               className="bg-white shadow-md rounded-lg p-4 mb-4"
             >
-              {/* Title */}
-              <h2
-                className="text-xl font-semibold mb-2 text-blue-600 cursor-pointer hover:underline"
-                onClick={() => handleTitleClick(topic._id)}
-              >
-                {topic.title || "Untitled Topic"}
-              </h2>
+              {/* Title and Edit Button */}
+              <div className="flex items-center justify-between">
+                <h2
+                  className="text-xl font-semibold mb-2 text-blue-600 cursor-pointer hover:underline"
+                  onClick={() => handleTitleClick(topic._id)}
+                >
+                  {topic.title || "Untitled Topic"}
+                </h2>
+                <button
+                  onClick={() => handleEditContentClick(topic)}
+                  className="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600"
+                >
+                  Edit
+                </button>
+              </div>
 
-              {/* Render Description when active */}
+              {/* Render Description and Questions if the topic is active */}
               {activeTopicId === topic._id && (
                 <div className="mt-4">
                   {/* Render HTML description safely */}
@@ -110,16 +164,15 @@ const ContentPage: React.FC = () => {
 
       {/* Add Content Button */}
       <button
-        onClick={() => handleAddContentClick(activeTopicId!)}
+        onClick={handleAddContentClick}
         className="fixed bottom-8 right-8 bg-blue-500 text-white p-4 rounded-full shadow-lg text-xl hover:bg-blue-600"
         title="Add Content"
-        disabled={!activeTopicId}
       >
         +
       </button>
 
       {/* Show Form Modal */}
-      {showForm && currentTopicId && (
+      {showForm && (
         <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-3xl">
             <button
@@ -129,8 +182,10 @@ const ContentPage: React.FC = () => {
               ✕
             </button>
             <InputFormPage
-              topicId={currentTopicId} // Ensure the correct topicId is passed
-              onClose={() => setShowForm(false)}
+              topicId={currentTopicId || id} // Pass current topic ID or parent ID
+              initialData={formInitialData} // Pass initial data for editing
+              onSubmit={handleUpdateContent} // Submit handler
+              onClose={() => setShowForm(false)} // Close the form
             />
           </div>
         </div>
@@ -138,3 +193,5 @@ const ContentPage: React.FC = () => {
     </div>
   );
 };
+
+export default ContentPage;
