@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import Home from "./pages/home/Home";
 import Edit from "./pages/edit/page.tsx";
-import Login from "./pages/login/login.tsx";
+import Login from "./pages/login/page.tsx";
 import Signup from "./pages/signup/page.tsx";
 import Create from "./pages/create/page.tsx";
 import Submit from "./pages/submit/page.tsx";
@@ -9,7 +9,6 @@ import YourPage from "./pages/test/page.tsx";
 import EditorPage from "./pages/editor/editor.tsx";
 import Sidebar from "./components/common/side-bar.tsx";
 import EditPage from "./pages/edit/page.tsx";
-import UserPostPage from "./pages/createtitle/page.tsx";
 
 function App() {
   return (
@@ -21,8 +20,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/test" element={<YourPage />} />
-          <Route path="/edit" element={<EditPage />} />
-          <Route path="/title" element={<UserPostPage />} />
+          <Route path="/edit" element={<YourPage />} />
           <Route path="/editor" element={<EditorPage />} />
           <Route path="/submit" element={<Submit />} />
           <Route path="/create" element={<Create />} />

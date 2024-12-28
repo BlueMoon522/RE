@@ -17,6 +17,7 @@ const Submit: React.FC = () => {
           "http://localhost:3000/api/content/676bf17b7ba0eec6980edc34",
         );
         const data = await response.json();
+        console.log("data:", data);
         setQuestions(data.questions || []);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -47,7 +48,10 @@ const Submit: React.FC = () => {
           {/* Background */}
           <div
             className="absolute inset-0 bg-black bg-opacity-50 -z-10"
-            style={{ backgroundImage: "url('/background2.jpg')" }}
+            style={{
+              backgroundImage: "url('/background2.jpg')",
+              backgroundAttachment: "fixed",
+            }}
           />
 
           {/* Questions */}
@@ -92,6 +96,7 @@ const Submit: React.FC = () => {
         </div>
       ) : (
         <RightPanel
+          fetchUrl="http://localhost:3000/api/content/676bf17b7ba0eec6980edc34"
           isPanelOpen={isPanelOpen}
           onClose={() => setIsPanelOpen(false)}
         />

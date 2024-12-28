@@ -1,16 +1,10 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useNavigate } from "react-router-dom";
 
 export default function SignupForm({
   className,
@@ -18,17 +12,13 @@ export default function SignupForm({
 }: React.ComponentPropsWithoutRef<"div">) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [reenterPassword, setReenterPassword] = useState("");
   const [error, setError] = useState("");
+
+  // Use React Router's useNavigate
   const navigate = useNavigate();
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    // Check if passwords match
-    if (password !== reenterPassword) {
-      setError("Passwords do not match.");
-      return;
-    }
 
     // Reset error
     setError("");
@@ -40,7 +30,7 @@ export default function SignupForm({
     };
 
     try {
-      const response = await fetch("http://localhost:3000/api/user/signup", {
+      const response = await fetch("http://localhost:3000/api/user/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -51,13 +41,16 @@ export default function SignupForm({
 
       if (response.ok) {
         const result = await response.json();
-        navigate("/");
         console.log("Signup successful:", result);
+
+        // Redirect to the home page
+        navigate("/");
       } else {
-        console.error("Signup failed:", await response.text());
+        const errorText = await response.text();
+        setError("Signup failed: " + errorText);
       }
     } catch (error) {
-      console.error("Error during signup:", error);
+      setError("Error during signup: " + error.message);
     }
   };
 
@@ -65,7 +58,7 @@ export default function SignupForm({
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
         <CardHeader className="text-center">
-          <CardTitle className="text-xl">Welcome </CardTitle>
+          <CardTitle className="text-xl">Welcome</CardTitle>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit}>
@@ -73,20 +66,18 @@ export default function SignupForm({
               <div className="flex flex-col gap-4"></div>
               <div className="grid gap-6">
                 <div className="grid gap-2">
-                  <Label htmlFor="email">Email</Label>
+                  <Label htmlFor="username">Username</Label>
                   <Input
                     id="username"
-                    type="username"
-                    placeholder="m@example.com"
+                    type="text"
+                    placeholder="Your username"
                     required
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                   />
                 </div>
                 <div className="grid gap-2">
-                  <div className="flex items-center">
-                    <Label htmlFor="password">Password</Label>
-                  </div>
+                  <Label htmlFor="password">Password</Label>
                   <Input
                     id="password"
                     type="password"
@@ -95,17 +86,7 @@ export default function SignupForm({
                     onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
-                {/* Re-enter Password Field */}
-                <div className="grid gap-2">
-                  <Label htmlFor="reenter-password">Re-enter Password</Label>
-                  <Input
-                    id="reenter-password"
-                    type="password"
-                    required
-                    value={reenterPassword}
-                    onChange={(e) => setReenterPassword(e.target.value)}
-                  />
-                </div>
+                {/* Error Message */}
                 {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
                 <Button type="submit" className="w-full">
                   Signup

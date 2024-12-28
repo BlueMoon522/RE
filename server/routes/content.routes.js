@@ -12,8 +12,8 @@ const router = express();
 
 router.post("/:id", protectedRoutes, postContent);
 router.post("/update/:id", protectedRoutes, updateContent);
-router.get("/", protectedRoutes, getAllContent);
-router.get("/:id", protectedRoutes, getContent);
+router.get("/", getAllContent);
+router.get("/:id", getContent);
 router.delete("/:id", protectedRoutes, deleteContent);
 
 export default router;

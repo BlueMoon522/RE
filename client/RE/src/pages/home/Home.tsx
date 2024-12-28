@@ -5,6 +5,7 @@ export default function Home() {
       className="relative flex flex-col items-center justify-center min-h-screen bg-cover bg-center"
       style={{
         backgroundImage: "url('/homepage.jpg')",
+        backgroundAttachment: "fixed",
       }}
     >
       <div className="flex h-screen">

@@ -21,7 +21,7 @@ const Sidebar = () => {
           <Link to="/create">Create</Link>
         </li>
         <li className="p-4 hover:bg-gray-700 cursor-pointer">
-          <Link to="/quizzes">Quizzes</Link>
+          <Link to="/submit">Quizzes</Link>
         </li>
         <li>
           <div

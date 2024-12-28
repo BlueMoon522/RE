@@ -3,6 +3,7 @@ import { useEffect } from "react";
 interface RightPanelProps {
   isPanelOpen: boolean;
   onClose: () => void; // Function to handle closing the panel
+  fetchUrl: string; // API endpoint as a prop
 }
 
 interface Question {
@@ -16,13 +17,17 @@ interface Content {
   questions: Question[];
 }
 
-const RightPanel: React.FC<RightPanelProps> = ({ isPanelOpen, onClose }) => {
+const RightPanel: React.FC<RightPanelProps> = ({
+  isPanelOpen,
+  onClose,
+  fetchUrl,
+}) => {
   const [loading, setLoading] = useState(true);
   const [content, setContent] = useState<Content | any>(null);
 
   useEffect(() => {
     // Fetch content data by ID
-    fetch("http://localhost:3000/api/content/676bece07ba0eec6980edc30")
+    fetch(fetchUrl)
       .then((response) => response.json())
       .then((data) => {
         setContent(data);
@@ -32,7 +37,7 @@ const RightPanel: React.FC<RightPanelProps> = ({ isPanelOpen, onClose }) => {
         console.error("Error fetching content:", error);
         setLoading(false);
       });
-  }, []);
+  }, [fetchUrl]);
   if (loading) return <p>Loading...</p>;
   if (!content) return <p>No content found!</p>;
 
