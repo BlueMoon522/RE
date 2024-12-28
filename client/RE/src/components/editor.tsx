@@ -2,18 +2,26 @@ import { useState } from "react";
 import ReactQuill, { Quill } from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import ImageResize from "quill-resize-image";
+import { useEffect } from "react";
 
 // Register the image resize module for Quill
 Quill.register("modules/imageResize", ImageResize);
 
 interface EditorProps {
   setDescription: (value: string) => void;
+  initialValue?: string; // Add initialValue prop to load existing content
 }
 
-const Editor: React.FC<EditorProps> = ({ setDescription }) => {
-  const [content, setContent] = useState<string>(""); // Editor content
+const Editor: React.FC<EditorProps> = ({
+  setDescription,
+  initialValue = "",
+}) => {
+  const [content, setContent] = useState<string>(initialValue); // Editor content
   // Saved data
-
+  // Update editor content when initialValue changes
+  useEffect(() => {
+    setContent(initialValue);
+  }, [initialValue]);
   // Quill editor configuration with the image resize module
   const modules = {
     toolbar: [
