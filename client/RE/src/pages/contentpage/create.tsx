@@ -21,6 +21,7 @@ interface InputFormPageProps {
   onSubmit: (updatedTopic: Topic) => Promise<void>; // Handler for submission
   onClose: () => void; // Handler for closing the form
 }
+
 const InputFormPage: React.FC<InputFormPageProps> = ({
   topicId,
   initialData,
@@ -49,6 +50,11 @@ const InputFormPage: React.FC<InputFormPageProps> = ({
 
     onSubmit(form); // Call the parent onSubmit handler with the form data
     onClose(); // Close the form
+  };
+
+  // Function to remove a question
+  const handleRemoveQuestion = (index: number) => {
+    setQuestions((qs) => qs.filter((_, i) => i !== index));
   };
 
   return (
@@ -171,6 +177,15 @@ const InputFormPage: React.FC<InputFormPageProps> = ({
                     placeholder="Enter tip for the answer"
                   />
                 </div>
+
+                {/* Remove Question Button */}
+                <button
+                  type="button"
+                  onClick={() => handleRemoveQuestion(index)}
+                  className="mt-2 bg-red-500 text-white px-4 py-2 rounded-lg"
+                >
+                  Remove Question
+                </button>
               </div>
             ))}
             <button

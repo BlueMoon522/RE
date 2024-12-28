@@ -104,7 +104,7 @@ const Submit: React.FC = () => {
         </div>
       ) : (
         <RightPanel
-          fetchUrl={`http://localhost:3000/api/content/${id}`} // Use the dynamic content ID here as well
+          fetchUrl={`http://localhost:3000/api/content/get/${id}`} // Use the dynamic content ID here as well
           isPanelOpen={isPanelOpen}
           onClose={() => setIsPanelOpen(false)}
         />

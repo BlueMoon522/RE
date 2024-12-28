@@ -14,6 +14,9 @@ import ContentPage from "./pages/contentpage/page.tsx";
 function App() {
   return (
     <div className="flex h-screen">
+      <div className="w-64 bg-gray-800 text-white overflow-y-auto">
+        <Sidebar />
+      </div>
       <div className="flex-grow overflow-y-auto p-4">
         <Routes>
           <Route path="/" element={<Home />} />
