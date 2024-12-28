@@ -30,7 +30,9 @@ const UserPostPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center">
       <div className="w-full max-w-3xl bg-white p-10 rounded-lg shadow-lg">
-        <h1 className="text-3xl font-bold mb-6 text-center">User Post Form</h1>
+        <h1 className="text-3xl font-bold mb-6 text-center">
+          Title Creation Page
+        </h1>
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Title */}
           <div>

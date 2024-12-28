@@ -64,3 +64,17 @@ export const getInfo = async (req, res) => {
     return res.status(500).json({ message: "internal server error" });
   }
 };
+
+//logout the user
+
+export const logout = async (req, res) => {
+  console.log("In logout function");
+  try {
+    //setting cookie jwt to maxage of 0 on press and value to null
+    res.cookie("jwt", "", { maxAge: 0 });
+    res.status(200).json({ message: "Logged Out" });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};

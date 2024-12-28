@@ -7,12 +7,12 @@ const mainSchema = new mongoose.Schema(
       ref: "user",
       required: true,
     },
-    subtopics: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "content",
-      },
-    ],
+    // subtopics: [
+    //   {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: "content",
+    //   },
+    // ],
     title: {
       type: String,
     },

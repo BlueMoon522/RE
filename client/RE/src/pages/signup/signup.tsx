@@ -73,11 +73,11 @@ export default function SignupForm({
               <div className="flex flex-col gap-4"></div>
               <div className="grid gap-6">
                 <div className="grid gap-2">
-                  <Label htmlFor="email">Email</Label>
+                  <Label htmlFor="username">Username</Label>
                   <Input
                     id="username"
                     type="username"
-                    placeholder="m@example.com"
+                    placeholder="Write your goddamn name"
                     required
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}

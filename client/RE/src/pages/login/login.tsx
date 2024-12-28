@@ -58,7 +58,7 @@ export default function SignupForm({
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
         <CardHeader className="text-center">
-          <CardTitle className="text-xl">Welcome</CardTitle>
+          <CardTitle className="text-xl">Welcome Back</CardTitle>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit}>
@@ -89,13 +89,13 @@ export default function SignupForm({
                 {/* Error Message */}
                 {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
                 <Button type="submit" className="w-full">
-                  Signup
+                  Login
                 </Button>
               </div>
               <div className="text-center text-sm">
-                Already have an account?{" "}
-                <a href="/login" className="underline underline-offset-4">
-                  Login
+                Don't have an account?{" "}
+                <a href="/signup" className="underline underline-offset-4">
+                  Signup
                 </a>
               </div>
             </div>
