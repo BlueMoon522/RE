@@ -1,24 +1,26 @@
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom"; // Import useParams to get the dynamic ID
 import RightPanel from "@/components/common/rightPanel";
 
 const Submit: React.FC = () => {
+  const { id } = useParams<{ id: string }>(); // Get the dynamic ID from the URL
   const [isPanelOpen, setIsPanelOpen] = useState(false);
-  const [questions, setQuestions] = useState([]);
+  const [questions, setQuestions] = useState<any[]>([]); // Use an appropriate type for questions
   const [loading, setLoading] = useState(true);
   const [showAnswers, setShowAnswers] = useState<{ [key: string]: boolean }>(
     {},
   );
 
   useEffect(() => {
-    // Fetch the API data
+    // Fetch the API data based on the dynamic ID
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "http://localhost:3000/api/content/676bf17b7ba0eec6980edc34",
+          `http://localhost:3000/api/content/get/${id}`, // Use the dynamic content ID
         );
         const data = await response.json();
-        console.log("data:", data);
-        setQuestions(data.questions || []);
+        console.log(data);
+        setQuestions(data.questions || []); // Assuming the response has a `questions` array
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -27,7 +29,7 @@ const Submit: React.FC = () => {
     };
 
     fetchData();
-  }, []);
+  }, [id]); // Re-fetch when the ID changes
 
   const togglePanel = () => {
     setIsPanelOpen(!isPanelOpen);
@@ -64,39 +66,45 @@ const Submit: React.FC = () => {
                 <h3 className="text-xl font-bold text-blue-600 mb-2">
                   {question.question}
                 </h3>
+
+                {/* Hint/Tips Section */}
+                <p className="text-gray-600 mb-2">
+                  <strong>Hint:</strong> {question.tips}
+                </p>
+
+                {/* Text Area */}
                 <textarea
-                  className="w-full px-4 py-2 mb-4 border border-gray-300 rounded-md shadow focus:outline-none focus:ring-4 focus:ring-blue-300"
-                  placeholder="Write your response here..."
-                />
-                <div className="mb-4 p-2 bg-gray-100 text-gray-600 rounded-md">
-                  Hint: {question.tips}
-                </div>
+                  className="w-full h-24 p-2 border border-gray-300 rounded-md mb-4"
+                  placeholder="Write your notes here..."
+                ></textarea>
+
+                {/* Show Answer Button */}
                 <button
+                  className="mt-2 bg-blue-600 text-white p-2 rounded transition duration-300 hover:bg-purple-600"
                   onClick={() => toggleAnswer(question._id)}
-                  className="px-4 py-2 bg-blue-500 text-white rounded-lg font-semibold hover:opacity-90 focus:outline-none focus:ring-4 focus:ring-blue-300"
                 >
-                  {showAnswers[question._id] ? "Hide Answer" : "Show Answer"}
+                  {showAnswers[question._id] ? "Hide" : "Show"} Answer
                 </button>
+
+                {/* Answer Display */}
                 {showAnswers[question._id] && (
-                  <p className="mt-4 text-gray-900 font-medium">
-                    Answer: {question.answer}
-                  </p>
+                  <p className="mt-2 text-gray-900">{question.answer}</p>
                 )}
               </div>
             ))}
           </div>
 
-          {/* Floating Action Button */}
+          {/* Toggle panel button */}
           <button
             onClick={togglePanel}
-            className="fixed bottom-6 right-6 w-14 h-14 flex items-center justify-center bg-gradient-to-r from-green-500 to-teal-500 text-white rounded-full shadow-2xl hover:opacity-90 focus:outline-none focus:ring-4 focus:ring-green-300 transform hover:scale-110 z-50"
+            className="absolute bottom-4 right-4 bg-blue-500 text-white p-4 rounded-full shadow-lg"
           >
             +
           </button>
         </div>
       ) : (
         <RightPanel
-          fetchUrl="http://localhost:3000/api/content/676bf17b7ba0eec6980edc34"
+          fetchUrl={`http://localhost:3000/api/content/${id}`} // Use the dynamic content ID here as well
           isPanelOpen={isPanelOpen}
           onClose={() => setIsPanelOpen(false)}
         />

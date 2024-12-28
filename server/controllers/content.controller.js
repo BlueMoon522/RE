@@ -45,7 +45,7 @@ export const getAllContent = async (req, res) => {
   }
 };
 
-//get content based on content id
+//get content based on topic id
 export const getContent = async (req, res) => {
   console.log("Inside the getContent function");
   try {
@@ -61,6 +61,34 @@ export const getContent = async (req, res) => {
       return res.status(400).json({ message: "Invalid topicId format" });
     }
     const contents = await Content.find({ topicId: topicId });
+    if (!contents || contents.length === 0) {
+      return res.status(404).json({ message: "No content found" });
+    }
+
+    console.log(contents);
+    return res.status(201).json(contents);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "Server Error" });
+  }
+};
+
+//get content based on content id
+export const getCurrentContent = async (req, res) => {
+  console.log("Inside the getContent function");
+  try {
+    console.log("topicid params", req.params.id);
+    const contentID = req.params.id;
+    if (!contentID) {
+      return res.status(404).json({ message: "No tokenId found" });
+    }
+    // const ID = req.params.id;
+    // const contents = await Content.findById(ID);
+    // If topicId should be an ObjectId, ensure it's valid
+    // if (!mongoose.Types.ObjectId.isValid(topicId)) {
+    //   return res.status(400).json({ message: "Invalid topicId format" });
+    // }
+    const contents = await Content.findById(contentID);
     if (!contents || contents.length === 0) {
       return res.status(404).json({ message: "No content found" });
     }

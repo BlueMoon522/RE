@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom"; // useNavigate instead of useHistory
 import InputFormPage from "./create.tsx";
 
 interface Question {
@@ -24,6 +24,7 @@ const ContentPage: React.FC = () => {
   const [showForm, setShowForm] = useState<boolean>(false); // Track form visibility
   const [currentTopicId, setCurrentTopicId] = useState<string | null>(null); // Track selected topic ID
   const [formInitialData, setFormInitialData] = useState<Topic | null>(null); // Track initial data for the form
+  const navigate = useNavigate(); // useNavigate hook for navigation
 
   useEffect(() => {
     const fetchContent = async () => {
@@ -65,6 +66,11 @@ const ContentPage: React.FC = () => {
     setShowForm(true); // Show the input form
   };
 
+  const handleQuizButtonClick = (contentId: string) => {
+    // Navigate to the Submit page with content ID
+    navigate(`/submit/${contentId}`);
+  };
+
   const handleUpdateContent = async (updatedTopic: Topic) => {
     try {
       const endpoint = updatedTopic._id
@@ -101,9 +107,10 @@ const ContentPage: React.FC = () => {
       console.error("Error saving content:", error);
     }
   };
+
   return (
     <div className="flex flex-col items-center min-h-screen bg-gray-100 py-6">
-      <h1 className="text-3xl font-bold mb-6 text-gray-800">Topic Details</h1>
+      <h1 className="text-3xl font-bold mb-6 text-gray-800">Topic Contents</h1>
       {error ? (
         <div className="text-red-500 text-lg">{error}</div>
       ) : (
@@ -113,7 +120,7 @@ const ContentPage: React.FC = () => {
               key={topic._id}
               className="bg-white shadow-md rounded-lg p-4 mb-4"
             >
-              {/* Title and Edit Button */}
+              {/* Title, Quiz Button, and Edit Button */}
               <div className="flex items-center justify-between">
                 <h2
                   className="text-xl font-semibold mb-2 text-blue-600 cursor-pointer hover:underline"
@@ -121,12 +128,22 @@ const ContentPage: React.FC = () => {
                 >
                   {topic.title || "Untitled Topic"}
                 </h2>
-                <button
-                  onClick={() => handleEditContentClick(topic)}
-                  className="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600"
-                >
-                  Edit
-                </button>
+                <div className="flex space-x-2">
+                  {/* Quiz Button */}
+                  <button
+                    onClick={() => handleQuizButtonClick(topic._id)} // Use the content ID here
+                    className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
+                  >
+                    Quiz
+                  </button>
+                  {/* Edit Button */}
+                  <button
+                    onClick={() => handleEditContentClick(topic)}
+                    className="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600"
+                  >
+                    Edit
+                  </button>
+                </div>
               </div>
 
               {/* Render Description and Questions if the topic is active */}

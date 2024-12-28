@@ -1,16 +1,15 @@
-import React, { useState } from "react";
 import { Link } from "react-router-dom"; // Import Link from react-router-dom
 import { useNavigate } from "react-router-dom";
 
 const Sidebar = () => {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  // const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const navigate = useNavigate();
 
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
-  };
-
+  // const toggleDropdown = () => {
+  //   setIsDropdownOpen(!isDropdownOpen);
+  // };
+  //
   const handleLogout = async () => {
     try {
       const response = await fetch("http://localhost:3000/api/user/logout", {
@@ -40,45 +39,7 @@ const Sidebar = () => {
         <li className="p-4 hover:bg-gray-700 cursor-pointer">
           <Link to="/">Home</Link>
         </li>
-        <li className="p-4 hover:bg-gray-700 cursor-pointer">
-          <Link to="/submit">Quizzes</Link>
-        </li>
-        <li>
-          <div
-            className="p-4 hover:bg-gray-700 cursor-pointer flex justify-between items-center"
-            onClick={toggleDropdown}
-          >
-            <span>Titles</span>
-            <span>{isDropdownOpen ? "▲" : "▼"}</span>
-          </div>
-          {isDropdownOpen && (
-            <ul className="bg-gray-700">
-              {[
-                "Topic 1",
-                "Topic 2",
-                "Topic 3",
-                "Topic 1",
-                "Topic 2",
-                "Topic 3",
-                "Topic 1",
-                "Topic 2",
-                "Topic 3",
-                "Topic 1",
-                "Topic 2",
-                "Topic 3",
-              ].map((topic, index) => (
-                <li
-                  key={index}
-                  className="p-4 pl-8 hover:bg-gray-600 cursor-pointer"
-                >
-                  <Link to={`/topic/${topic.toLowerCase().replace(" ", "-")}`}>
-                    {topic}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          )}
-        </li>
+        {/*Add to the list*/}
       </ul>
       <div className="p-4 hover:bg-gray-700 cursor-pointer border-t border-gray-700">
         <button
