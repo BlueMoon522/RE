@@ -151,7 +151,7 @@ const ContentPage: React.FC = () => {
                 <div className="mt-4">
                   {/* Render HTML description safely */}
                   <div
-                    className="prose text-gray-700 text-sm"
+                    className="prose text-gray-700 text-lg" //change text-lg to text-sm/text-base to change text sizes
                     dangerouslySetInnerHTML={{ __html: topic.description }}
                   ></div>
 
