@@ -11,7 +11,7 @@ interface Post {
 }
 
 const HomePage: React.FC = () => {
-  const [posts, setPosts] = useState<Post[]>([]);
+  const [posts, setPosts] = useState<Post[]>([]); // Ensure posts is an array
   const [error, setError] = useState<string | null>(null);
   const [newTitle, setNewTitle] = useState<string>("");
   const [newContent, setNewContent] = useState<string>("");
@@ -32,7 +32,7 @@ const HomePage: React.FC = () => {
           throw new Error("Failed to fetch posts");
         }
         const data = await response.json();
-        setPosts(data);
+        setPosts(Array.isArray(data) ? data : []); // Ensure data is an array
       } catch (err: any) {
         console.error(err.message);
         setError("Failed to load posts.");
@@ -41,12 +41,10 @@ const HomePage: React.FC = () => {
     fetchPosts();
   }, []);
 
-  // Handle post click to navigate to details
   const handlePostClick = (id: string) => {
     navigate(`/content/${id}`);
   };
 
-  // Handle form submission for adding or editing a post
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const url = editMode
@@ -69,14 +67,12 @@ const HomePage: React.FC = () => {
         throw new Error("Failed to save post");
       }
 
-      // Reset form
       setNewTitle("");
       setNewContent("");
       setNewVisibility("public");
       setEditMode(false);
       setEditPostId(null);
 
-      // Refetch posts to ensure consistency
       const postsResponse = await fetch(
         "http://localhost:3000/api/user/post/",
         {
@@ -89,13 +85,13 @@ const HomePage: React.FC = () => {
       }
 
       const updatedPosts = await postsResponse.json();
-      setPosts(updatedPosts);
+      setPosts(Array.isArray(updatedPosts) ? updatedPosts : []); // Ensure updatedPosts is an array
     } catch (err: any) {
       console.error(err.message);
       setError("Failed to save post.");
     }
   };
-  // Handle edit button click
+
   const handleEditClick = (post: Post) => {
     setNewTitle(post.title);
     setNewContent(post.content);
@@ -111,7 +107,6 @@ const HomePage: React.FC = () => {
         <div className="text-red-500 text-lg">{error}</div>
       ) : (
         <>
-          {/* Add/Edit Form */}
           <form
             onSubmit={handleFormSubmit}
             className="bg-white shadow-md rounded-lg p-4 mb-6 w-full max-w-lg"
@@ -152,34 +147,39 @@ const HomePage: React.FC = () => {
             </button>
           </form>
 
-          {/* Post List */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full px-6">
-            {posts.map((post) => (
-              <div
-                key={post._id}
-                className="bg-white shadow-md rounded-lg p-4 cursor-pointer"
-              >
-                <h2
-                  className="text-xl font-semibold mb-2 text-gray-900"
-                  onClick={() => handlePostClick(post._id)}
+            {posts.length > 0 ? (
+              posts.map((post) => (
+                <div
+                  key={post._id}
+                  className="bg-white shadow-md rounded-lg p-4 cursor-pointer"
                 >
-                  {post.title}
-                </h2>
-                <div className="text-gray-600 text-sm">
-                  {new Date(post.createdAt).toLocaleDateString()}
+                  <h2
+                    className="text-xl font-semibold mb-2 text-gray-900"
+                    onClick={() => handlePostClick(post._id)}
+                  >
+                    {post.title}
+                  </h2>
+                  <div className="text-gray-600 text-sm">
+                    {new Date(post.createdAt).toLocaleDateString()}
+                  </div>
+                  <p className="text-gray-500 mt-2">
+                    {post.visibility.charAt(0).toUpperCase() +
+                      post.visibility.slice(1)}
+                  </p>
+                  <button
+                    onClick={() => handleEditClick(post)}
+                    className="mt-4 text-blue-500"
+                  >
+                    Edit
+                  </button>
                 </div>
-                <p className="text-gray-500 mt-2">
-                  {post.visibility.charAt(0).toUpperCase() +
-                    post.visibility.slice(1)}
-                </p>
-                <button
-                  onClick={() => handleEditClick(post)}
-                  className="mt-4 text-blue-500"
-                >
-                  Edit
-                </button>
-              </div>
-            ))}
+              ))
+            ) : (
+              <p className="text-gray-500 text-center col-span-full">
+                No posts available.
+              </p>
+            )}
           </div>
         </>
       )}
