@@ -24,7 +24,7 @@ const HomePage: React.FC = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/user/post/", {
+        const response = await fetch("/api/user/post/", {
           method: "GET",
           credentials: "include",
         });
@@ -32,6 +32,7 @@ const HomePage: React.FC = () => {
           throw new Error("Failed to fetch posts");
         }
         const data = await response.json();
+
         setPosts(Array.isArray(data) ? data : []); // Ensure data is an array
       } catch (err: any) {
         console.error(err.message);
@@ -47,9 +48,7 @@ const HomePage: React.FC = () => {
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const url = editMode
-      ? `http://localhost:3000/api/user/post/${editPostId}`
-      : "http://localhost:3000/api/user/post/";
+    const url = editMode ? `/api/user/post/${editPostId}` : "/api/user/post/";
 
     try {
       const response = await fetch(url, {
@@ -73,13 +72,10 @@ const HomePage: React.FC = () => {
       setEditMode(false);
       setEditPostId(null);
 
-      const postsResponse = await fetch(
-        "http://localhost:3000/api/user/post/",
-        {
-          method: "GET",
-          credentials: "include",
-        },
-      );
+      const postsResponse = await fetch("/api/user/post/", {
+        method: "GET",
+        credentials: "include",
+      });
       if (!postsResponse.ok) {
         throw new Error("Failed to fetch updated posts");
       }

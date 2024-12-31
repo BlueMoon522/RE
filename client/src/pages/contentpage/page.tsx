@@ -29,13 +29,10 @@ const ContentPage: React.FC = () => {
   useEffect(() => {
     const fetchContent = async () => {
       try {
-        const response = await fetch(
-          `http://localhost:3000/api/content/${id}`,
-          {
-            method: "GET",
-            credentials: "include",
-          },
-        );
+        const response = await fetch(`/api/content/${id}`, {
+          method: "GET",
+          credentials: "include",
+        });
         if (!response.ok) {
           throw new Error("Failed to fetch content");
         }

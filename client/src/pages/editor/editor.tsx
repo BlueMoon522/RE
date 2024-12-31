@@ -59,7 +59,7 @@ const EditorPage = () => {
   // Fetch saved contents from the backend
   const fetchSavedContents = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/api/editor/get");
+      const response = await axios.get("/api/editor/get");
       setSavedContents(response.data);
     } catch (error) {
       console.error("Error fetching saved contents:", error);

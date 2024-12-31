@@ -12,7 +12,7 @@ const UserPostPage: React.FC = () => {
     const form = { title, content, visibility };
 
     try {
-      const response = await fetch("http://localhost:3000/api/user/post/", {
+      const response = await fetch("/api/user/post/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -16,7 +16,7 @@ const Submit: React.FC = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3000/api/content/get/${id}`, // Use the dynamic content ID
+          `/api/content/get/${id}`, // Use the dynamic content ID
         );
         const data = await response.json();
         console.log(data);
