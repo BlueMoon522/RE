@@ -88,3 +88,24 @@ export const deleteTopic = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+//to get all the post of the users that are public excluding yours
+export const userPublicTopics = async (req, res) => {
+  console.log("in function of topic.userPublicTopics");
+  try {
+    const user = req.user._id;
+    console.log(user);
+    const topic = await Topic.find({
+      visibility: "public",
+      user: { $ne: user }, // Exclude topics where the user ID matches the current user's ID
+    });
+    if (topic.length === 0 || !topic) {
+      return res.status(200).json({
+        message: "No topics posted yet",
+      });
+    }
+    console.log(" post", topic);
+    return res.status(200).json(topic);
+  } catch (error) {
+    return res.status(500).json({ error: "Server Error" });
+  }
+};

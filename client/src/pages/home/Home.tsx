@@ -111,7 +111,7 @@ const HomePage: React.FC = () => {
 
   return (
     <div className="flex flex-col items-center min-h-screen bg-gray-100 py-6">
-      <h1 className="text-3xl font-bold mb-6 text-gray-800">User Posts</h1>
+      <h1 className="text-3xl font-bold mb-6 text-gray-800">Your Topics</h1>
       {error ? (
         <div className="text-red-500 text-lg">{error}</div>
       ) : (
@@ -134,7 +134,7 @@ const HomePage: React.FC = () => {
                   required
                 />
                 <textarea
-                  placeholder="Content"
+                  placeholder="Content:Write a small context for title,max 20 words"
                   value={newContent}
                   onChange={(e) => setNewContent(e.target.value)}
                   className="w-full p-2 border border-gray-300 rounded mb-4"
