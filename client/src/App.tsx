@@ -1,9 +1,4 @@
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/home/Home";
 import Login from "./pages/login/login.tsx";
 import Signup from "./pages/signup/page.tsx";
@@ -13,6 +8,7 @@ import EditorPage from "./pages/editor/editor.tsx";
 import Sidebar from "./components/common/side-bar.tsx";
 import UserPostPage from "./pages/createtitle/page.tsx";
 import ContentPage from "./pages/contentpage/page.tsx";
+import Public from "./pages/public/public.tsx";
 
 function App() {
   return (
@@ -24,6 +20,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/test" element={<YourPage />} />
+          <Route path="/public" element={<Public />} />
           <Route path="/content/:id" element={<ContentPage />} />
           <Route path="/title" element={<UserPostPage />} />
           <Route path="/editor" element={<EditorPage />} />

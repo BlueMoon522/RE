@@ -8,11 +8,13 @@ export const postContent = async (req, res) => {
   const { title, description, questions } = req.body;
   try {
     const topicId = req.params.id;
+    const userId = req.user._id.toString();
     const existingTopic = Topic.findById(topicId);
     if (!existingTopic || !topicId) {
       return res.status(404).json({ message: "Topic not found" });
     }
     const newTopic = new Content({
+      user: userId,
       topicId: topicId,
       title,
       description,
@@ -110,6 +112,9 @@ export const updateContent = async (req, res) => {
     console.log("ID:", ID);
     //finding content by id
     let content = await Content.findById(ID);
+    if (ID != content.user) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
     const contents = await Content.findById(ID);
     console.log("Contents:", contents);
     if (!content || !ID)

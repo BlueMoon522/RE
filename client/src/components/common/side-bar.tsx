@@ -39,6 +39,9 @@ const Sidebar = () => {
         <li className="p-4 hover:bg-gray-700 cursor-pointer">
           <Link to="/">Home</Link>
         </li>
+        <li className="p-4 hover:bg-gray-700 cursor-pointer">
+          <Link to="/public">Public</Link>
+        </li>
         {/*Add to the list*/}
       </ul>
       <div className="p-4 hover:bg-gray-700 cursor-pointer border-t border-gray-700">

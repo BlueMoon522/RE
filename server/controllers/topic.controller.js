@@ -55,6 +55,10 @@ export const updateTopic = async (req, res) => {
     const ID = req.params.id;
     //finding content by id
     let topic = await Topic.findById(ID);
+    console.log("topic id", topic.user);
+    if (ID != topic.user) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
     if (!topic || !ID)
       return res.status(404).json({ message: "Content not found" });
 
