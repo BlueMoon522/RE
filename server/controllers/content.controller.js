@@ -9,7 +9,12 @@ export const postContent = async (req, res) => {
   try {
     const topicId = req.params.id;
     const userId = req.user._id.toString();
-    const existingTopic = Topic.findById(topicId);
+    console.log("userID", userId);
+    const existingTopic = await Topic.findById(topicId);
+    console.log("topic userID", existingTopic.user.toString());
+    if (existingTopic.user != userId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
     if (!existingTopic || !topicId) {
       return res.status(404).json({ message: "Topic not found" });
     }
