@@ -1,19 +1,19 @@
 import { generateTokenAndSetCookie } from "../lib/utils/generateToken.js";
-import user from "../models/user.model.js";
+import User from "../models/user.model.js";
 import * as argon2 from "argon2";
 //generate a token and JWT tokens
 //also kind of a signin
 export const userCreate = async (req, res) => {
   console.log("Inside the signin/userCreate function");
   const { username, password } = req.body;
-  const existingUser = await user.findOne({ username });
+  const existingUser = await User.findOne({ username });
   if (existingUser) {
     return res.status(400).json({ error: "username Taken" });
   }
   // Hash a password
   const hashedPassword = await argon2.hash(password);
   try {
-    const newUser = new user({
+    const newUser = new User({
       username,
       password: hashedPassword,
     });
@@ -34,7 +34,7 @@ export const userCreate = async (req, res) => {
 export const loginUser = async (req, res) => {
   console.log("Inside the login function");
   const { username, password } = req.body;
-  const existingUser = await user.findOne({ username });
+  const existingUser = await User.findOne({ username });
   try {
     if (existingUser) {
       console.log("user exists");
@@ -55,12 +55,18 @@ export const loginUser = async (req, res) => {
 export const getInfo = async (req, res) => {
   console.log("Inside the getInfo function");
   try {
-    const userId = req.user.userId; //access the Id
-    user.findById(userId).then((userData) => {
-      return res.json(userData, --password);
-    });
+    const userId = req.user._id; //access the Id
+    console.log(userId);
+    const user = await User.findById(userId).lean(); //lean to get the plain object as response
+    console.log("user", user);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    // Remove the password field from the user object
+    const { password, ...userWithoutPassword } = user;
+    return res.json(userWithoutPassword);
   } catch (error) {
-    console.log(err);
+    console.log(error);
     return res.status(500).json({ message: "internal server error" });
   }
 };
