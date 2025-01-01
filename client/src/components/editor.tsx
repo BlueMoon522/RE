@@ -3,7 +3,6 @@ import ReactQuill, { Quill } from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import ImageResize from "quill-resize-image";
 import { useEffect } from "react";
-
 // Register the image resize module for Quill
 Quill.register("modules/imageResize", ImageResize);
 
@@ -45,7 +44,8 @@ const Editor: React.FC<EditorProps> = ({
         (url) => `<img src="${url}" />`,
       );
 
-    console.log(processedContent);
+    //to see the current state of text to html
+    // console.log(processedContent);
     setContent(processedContent); // Update state with processed content
     setDescription(processedContent);
   };
