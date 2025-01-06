@@ -55,8 +55,14 @@ export default function SignupForm({
   };
 
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card>
+    <div
+      className={cn(
+        "flex justify-center items-center min-h-screen bg-gray-50",
+        className,
+      )}
+      {...props}
+    >
+      <Card className="w-full max-w-md p-6 bg-white shadow-lg rounded-lg">
         <CardHeader className="text-center">
           <CardTitle className="text-xl">Welcome Back</CardTitle>
         </CardHeader>
@@ -88,11 +94,11 @@ export default function SignupForm({
                 </div>
                 {/* Error Message */}
                 {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
-                <Button type="submit" className="w-full">
+                <Button type="submit" className="w-full mt-4">
                   Login
                 </Button>
               </div>
-              <div className="text-center text-sm">
+              <div className="text-center text-sm mt-4">
                 Don't have an account?{" "}
                 <a href="/signup" className="underline underline-offset-4">
                   Signup

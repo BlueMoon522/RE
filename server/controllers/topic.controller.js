@@ -51,12 +51,13 @@ export const userTopics = async (req, res) => {
 export const updateTopic = async (req, res) => {
   console.log("In update Topic function");
   try {
+    const userId = req.user._id.toString();
     let { title, content, visibility } = req.body;
     const ID = req.params.id;
     //finding content by id
     let topic = await Topic.findById(ID);
     console.log("topic id", topic.user);
-    if (ID != topic.user) {
+    if (userId != topic.user) {
       return res.status(401).json({ message: "Unauthorized" });
     }
     if (!topic || !ID)

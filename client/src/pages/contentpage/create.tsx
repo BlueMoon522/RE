@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "react-quill/dist/quill.snow.css";
 import Editor from "@/components/editor";
 
@@ -23,7 +23,6 @@ interface InputFormPageProps {
 }
 
 const InputFormPage: React.FC<InputFormPageProps> = ({
-  topicId,
   initialData,
   onSubmit,
   onClose,

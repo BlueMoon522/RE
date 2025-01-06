@@ -1,9 +1,4 @@
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/home/Home";
 import Login from "./pages/login/login.tsx";
 import Signup from "./pages/signup/page.tsx";
@@ -34,18 +29,31 @@ function App() {
       }
     },
   });
+
   return (
-    // <div className="flex h-screen">
-    // <div className="w-64 bg-gray-800 text-white overflow-y-auto">
-    <div className="flex max-w-6xl mx-auto">
-      {authuser && <Sidebar />}
-      <div className="flex-grow overflow-y-auto p-4">
+    <div className="flex max-w-full mx-auto">
+      {authuser && (
+        <div
+          style={{
+            width: "250px", // Fixed width for the sidebar
+            position: "fixed", // Sidebar stays fixed on the left
+            height: "100vh", // Full height
+            backgroundColor: "#f4f4f4", // Optional background color for the sidebar
+          }}
+          className="flex-shrink-0"
+        >
+          <Sidebar />
+        </div>
+      )}
+      <div className="flex-grow overflow-y-auto p-4 ml-[250px]">
+        {" "}
+        {/* Adjust the left margin to accommodate the sidebar */}
         <Routes>
           <Route
             path="/"
             element={authuser ? <Home /> : <Navigate to="login" />}
           />
-          {/*These are just test routes so not protected*/}
+          {/* These are just test routes, so not protected */}
           <Route path="/test" element={<YourPage />} />
           <Route path="/editor" element={<EditorPage />} />
           {/**/}
@@ -76,7 +84,6 @@ function App() {
         </Routes>
       </div>
     </div>
-    // </div>
   );
 }
 

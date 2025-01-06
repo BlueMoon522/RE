@@ -50,6 +50,7 @@ const HomePage: React.FC = () => {
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const url = editMode ? `/api/user/post/${editPostId}` : "/api/user/post/";
+    console.log("edit post id", editPostId);
 
     try {
       const response = await fetch(url, {

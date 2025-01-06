@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom"; // useNavigate instead of useHistory
 import InputFormPage from "./create.tsx";
-import { log } from "console";
 
 interface Question {
   tips: string;
@@ -18,7 +17,6 @@ interface Topic {
 }
 
 const ContentPage: React.FC = () => {
-  const [data, setData] = useState({});
   const { id } = useParams<{ id: string }>();
   const [topics, setTopics] = useState<Topic[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -40,8 +38,8 @@ const ContentPage: React.FC = () => {
         }
         const data = await response.json();
         setTopics(data);
-      } catch (err: any) {
-        console.error(err.message);
+      } catch (err: unknown) {
+        console.log(err);
         setError("Failed to load content.");
       }
     };
@@ -70,7 +68,7 @@ const ContentPage: React.FC = () => {
     navigate(`/submit/${contentId}`);
   };
 
-  const handleUpdateContent = async (updatedTopic: Topic) => {
+  const handleUpdateContent = async (updatedTopic: Topic): Promise<void> => {
     try {
       const endpoint = updatedTopic._id
         ? `http://localhost:3000/api/content/update/${updatedTopic._id}`
@@ -106,33 +104,6 @@ const ContentPage: React.FC = () => {
       console.error("Error saving content:", error);
     }
   };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch("/api/user/info", {
-          method: "GET",
-          credentials: "include", // Include credentials to send cookies/session data
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        const result = await response.json(); // Parse JSON response
-
-        setData(result); // Store the response in state
-      } catch (err) {
-        console.error("Error fetching data:", err);
-      }
-    };
-
-    fetchData();
-  }, []);
-  const uid = data._id;
-  console.log("uid", uid);
-  console.log("topic", topics);
 
   return (
     <div className="flex flex-col items-center min-h-screen bg-gray-100 py-6">
@@ -227,9 +198,9 @@ const ContentPage: React.FC = () => {
               ✕
             </button>
             <InputFormPage
-              topicId={currentTopicId || id} // Pass current topic ID or parent ID
+              topicId={currentTopicId || id || null} // Pass current topic ID or parent ID
               initialData={formInitialData} // Pass initial data for editing
-              onSubmit={handleUpdateContent} // Submit handler
+              onSubmit={handleUpdateContent}
               onClose={() => setShowForm(false)} // Close the form
             />
           </div>
