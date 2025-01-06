@@ -10,7 +10,14 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    bookmarks: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: "topics",
+      },
+    ],
   },
+
   { timestamps: true },
 );
 

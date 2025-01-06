@@ -1,4 +1,6 @@
 import { generateTokenAndSetCookie } from "../lib/utils/generateToken.js";
+import Topic from "../models/topic.model.js";
+import user from "../models/user.model.js";
 import User from "../models/user.model.js";
 import * as argon2 from "argon2";
 //generate a token and JWT tokens
@@ -94,5 +96,28 @@ export const authedUser = async (req, res) => {
   } catch (error) {
     console.log(error.message);
     res.status(500).json({ error: "Internal server error" });
+  }
+};
+//add or remove the bookmark
+export const bookmark = async (req, res) => {
+  console.log("in bookmark function");
+
+  try {
+    const userId = req.user._id; //access the Id
+    const user = await user.findById(userId);
+    const topicId = req.params.id;
+    //finding if the topic id already exists
+    const existingTopic = user.bookmark.includes(topicId);
+
+    if (existingTopic) {
+      //to delete the topic id if it is already bookmarked
+      console.log("Remaining");
+    }
+    const topic = await Topic.findById(topicId);
+    if (!topic) {
+      res.status(404).json({ error: "Topic not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Server error" });
   }
 };
