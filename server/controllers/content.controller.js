@@ -112,12 +112,14 @@ export const getCurrentContent = async (req, res) => {
 export const updateContent = async (req, res) => {
   console.log("In update content function");
   try {
+    const userId = req.user._id.toString();
+    console.log("userId", userId);
     let { title, description, questions } = req.body;
     const ID = req.params.id;
-    console.log("ID:", ID);
     //finding content by id
     let content = await Content.findById(ID);
-    if (ID != content.user) {
+    console.log("user from topic:", content.user);
+    if (userId != content.user) {
       return res.status(401).json({ message: "Unauthorized" });
     }
     const contents = await Content.findById(ID);

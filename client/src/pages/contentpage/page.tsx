@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom"; // useNavigate instead of useHistory
 import InputFormPage from "./create.tsx";
+import { log } from "console";
 
 interface Question {
   tips: string;
@@ -17,6 +18,7 @@ interface Topic {
 }
 
 const ContentPage: React.FC = () => {
+  const [data, setData] = useState({});
   const { id } = useParams<{ id: string }>();
   const [topics, setTopics] = useState<Topic[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -105,11 +107,41 @@ const ContentPage: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("/api/user/info", {
+          method: "GET",
+          credentials: "include", // Include credentials to send cookies/session data
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const result = await response.json(); // Parse JSON response
+
+        setData(result); // Store the response in state
+      } catch (err) {
+        console.error("Error fetching data:", err);
+      }
+    };
+
+    fetchData();
+  }, []);
+  const uid = data._id;
+  console.log("uid", uid);
+  console.log("topic", topics);
+
   return (
     <div className="flex flex-col items-center min-h-screen bg-gray-100 py-6">
       <h1 className="text-3xl font-bold mb-6 text-gray-800">Topic Contents</h1>
       {error ? (
-        <div className="text-red-500 text-lg">{error}</div>
+        <div className="text-red-500 text-lg">
+          {/*add {error} instead to show error*/}
+          No contents for the topic yet!!
+        </div>
       ) : (
         <div className="w-full px-6 max-w-5xl">
           {topics.map((topic) => (
@@ -184,7 +216,6 @@ const ContentPage: React.FC = () => {
       >
         +
       </button>
-
       {/* Show Form Modal */}
       {showForm && (
         <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">

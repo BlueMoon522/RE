@@ -84,3 +84,15 @@ export const logout = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+//to verify
+export const authedUser = async (req, res) => {
+  console.log("In authUser function");
+  try {
+    //finding user according to their id and removing the password from the json
+    const user = await User.findById(req.user._id).select("-password");
+    res.status(200).json(user);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
