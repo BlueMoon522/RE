@@ -1,155 +1,240 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-interface Question {
-  tips: string;
-  question: string;
-  answer: string;
-}
-
-interface Content {
+interface Post {
+  _id: string;
+  user: string;
   title: string;
-  description: string;
-  questions: Question[];
+  content: string;
+  visibility: string;
+  createdAt: string;
 }
 
-const Test: React.FC = () => {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [questions, setQuestions] = useState([
-    { question: "", answer: "", tips: "" },
-  ]);
-  const [loading, setLoading] = useState(true);
-  const [content, setContent] = useState<Content | any>(null);
+const HomePage: React.FC = () => {
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [isFormVisible, setIsFormVisible] = useState<boolean>(false);
+  const [editMode, setEditMode] = useState<boolean>(false);
+  const [editPostId, setEditPostId] = useState<string | null>(null);
+  const [newTitle, setNewTitle] = useState<string>("");
+  const [newContent, setNewContent] = useState<string>("");
+  const [newVisibility, setNewVisibility] = useState<string>("public");
+  const navigate = useNavigate();
 
-  //to add the questions which is array of objects
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const response = await fetch("/api/user/post/", {
+          method: "GET",
+          credentials: "include",
+        });
 
-  const handleAddQuestion = () => {
-    setQuestions([...questions, { question: "", answer: "", tips: "" }]);
-  };
+        if (!response.ok) {
+          throw new Error("Failed to fetch posts");
+        }
 
-  const handleQuestionChange = (
-    index: number,
-    field: string,
-    value: string,
-  ) => {
-    const updatedQuestions = questions.map((q, i) =>
-      i === index ? { ...q, [field]: value } : q,
-    );
-    setQuestions(updatedQuestions);
-  };
+        const data = await response.json();
+        setPosts(Array.isArray(data) ? data : []);
+      } catch (err: any) {
+        console.error(err.message);
+        setError("Failed to load posts.");
+      }
+    };
 
-  //postin in the url
-  const handleSubmit = async (e: React.FormEvent) => {
+    fetchPosts();
+  }, []);
+
+  const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const form = { title, description, questions };
+    const url = editMode ? `/api/user/post/${editPostId}` : "/api/user/post/";
+
     try {
-      const response = await fetch(
-        "http://localhost:3000/api/content/6767f8b70e10133f78d34fde",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(form),
-        },
-      );
-      const result = await response.json();
-      console.log("Data posted successfully:", result);
-    } catch (error) {
-      console.error("Error posting data:", error);
+      const response = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({
+          title: newTitle,
+          content: newContent,
+          visibility: newVisibility,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to save post");
+      }
+
+      setNewTitle("");
+      setNewContent("");
+      setNewVisibility("public");
+      setEditMode(false);
+      setEditPostId(null);
+      setIsFormVisible(false);
+
+      const postsResponse = await fetch("/api/user/post/", {
+        method: "GET",
+        credentials: "include",
+      });
+
+      if (!postsResponse.ok) {
+        throw new Error("Failed to fetch updated posts");
+      }
+
+      const updatedPosts = await postsResponse.json();
+      setPosts(Array.isArray(updatedPosts) ? updatedPosts : []);
+    } catch (err: any) {
+      console.error(err.message);
+      setError("Failed to save post.");
     }
   };
-  //get from the post
-  useEffect(() => {
-    // Fetch content data by ID
-    fetch("http://localhost:3000/api/content/")
-      .then((response) => response.json())
-      .then((data) => {
-        setContent(data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching content:", error);
-        setLoading(false);
-      });
-  }, []);
-  if (loading) return <p>Loading...</p>;
-  if (!content) return <p>No content found!</p>;
+
+  const handleEditClick = (post: Post) => {
+    setNewTitle(post.title);
+    setNewContent(post.content);
+    setNewVisibility(post.visibility);
+    setEditMode(true);
+    setEditPostId(post._id);
+    setIsFormVisible(true);
+  };
+
+  const handleNewPostClick = () => {
+    setNewTitle("");
+    setNewContent("");
+    setNewVisibility("public");
+    setEditMode(false);
+    setEditPostId(null);
+    setIsFormVisible(true);
+  };
+
   return (
-    <>
-      <form onSubmit={handleSubmit}>
+    <div className="h-screen bg-gray-50 font-sans relative">
+      {/* Header */}
+      <div className="w-full p-6 flex justify-between items-center border-b border-gray-300">
         <div>
-          <label>Title:</label>
-          <input
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
+          <h1 className="text-4xl font-serif text-gray-800">
+            Application Name
+          </h1>
+          <span className="text-xl font-light text-gray-600">Here</span>
         </div>
-        <div>
-          <label>Description:</label>
-          <input
-            type="text"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-        </div>
-        <div>
-          <label>Questions:</label>
-          {questions.map((q, index) => (
-            <div key={index}>
-              <input
-                type="text"
-                placeholder="Question"
-                value={q.question}
-                onChange={(e) =>
-                  handleQuestionChange(index, "question", e.target.value)
-                }
-              />
-              <input
-                type="text"
-                placeholder="Answer"
-                value={q.answer}
-                onChange={(e) =>
-                  handleQuestionChange(index, "answer", e.target.value)
-                }
-              />
-              <input
-                type="text"
-                placeholder="Tips/Hints"
-                value={q.tips}
-                onChange={(e) =>
-                  handleQuestionChange(index, "tips", e.target.value)
-                }
-              />
-            </div>
-          ))}
-          <button type="button" onClick={handleAddQuestion}>
-            Add Question
-          </button>
-        </div>
-        <button type="submit">Submit</button>
-      </form>
-      {/*Part where the got data is processed*/}
-      <div>
-        <h1>Data from API</h1>
-        <ul>
-          {content.map((item, index) => (
-            <li key={index}>{JSON.stringify(item)}</li>
-          ))}
-        </ul>
+
+        <button
+          onClick={handleNewPostClick}
+          className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded shadow-md"
+        >
+          New
+        </button>
       </div>
-    </>
+
+      {/* Content */}
+      <div className="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {error ? (
+          <div className="text-red-500 text-lg col-span-full">{error}</div>
+        ) : posts.length > 0 ? (
+          posts.map((post) => (
+            <div
+              key={post._id}
+              className="bg-white shadow rounded-lg p-6 relative"
+            >
+              {/* Post Content */}
+              <div>
+                <h3 className="text-gray-800 font-medium text-lg mb-2">
+                  {post.title}
+                </h3>
+                <p className="text-gray-500 text-sm line-clamp-2">
+                  {post.content}
+                </p>
+              </div>
+
+              {/* Buttons */}
+              <div className="flex justify-between items-center mt-4">
+                <button
+                  onClick={() => navigate(`/content/${post._id}`)}
+                  className="text-blue-500 text-sm hover:underline"
+                >
+                  View
+                </button>
+                <button
+                  onClick={() => handleEditClick(post)}
+                  className="text-blue-500 text-sm hover:underline"
+                >
+                  Edit
+                </button>
+                <button className="text-blue-500 text-sm hover:underline">
+                  Delete
+                </button>
+              </div>
+            </div>
+          ))
+        ) : (
+          <p className="text-gray-500 text-center col-span-full">
+            No posts available.
+          </p>
+        )}
+      </div>
+
+      {/* Floating New Button */}
+      <button
+        onClick={handleNewPostClick}
+        className="fixed bottom-6 right-6 bg-blue-500 hover:bg-blue-600 text-white rounded-full w-16 h-16 flex items-center justify-center shadow-lg text-3xl z-50"
+      >
+        +
+      </button>
+
+      {/* Form Modal */}
+      {isFormVisible && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <form
+            onSubmit={handleFormSubmit}
+            className="bg-white shadow-md rounded-lg p-6 w-full max-w-md relative"
+          >
+            <h2 className="text-xl font-semibold mb-4">
+              {editMode ? "Edit Post" : "Add New Post"}
+            </h2>
+            <input
+              type="text"
+              placeholder="Title"
+              value={newTitle}
+              onChange={(e) => setNewTitle(e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded mb-4"
+              required
+            />
+            <textarea
+              placeholder="Content: Write a small context for title, max 20 words"
+              value={newContent}
+              onChange={(e) => setNewContent(e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded mb-4"
+              rows={4}
+              required
+            />
+            <select
+              value={newVisibility}
+              onChange={(e) => setNewVisibility(e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded mb-4"
+              required
+            >
+              <option value="public">Public</option>
+              <option value="private">Private</option>
+            </select>
+            <div className="flex justify-between">
+              <button
+                type="submit"
+                className="bg-blue-500 text-white py-2 px-4 rounded"
+              >
+                {editMode ? "Update Post" : "Add Post"}
+              </button>
+              <button
+                type="button"
+                onClick={() => setIsFormVisible(false)}
+                className="bg-red-500 text-white py-2 px-4 rounded"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
+    </div>
   );
 };
 
-export default Test;
-
-// {
-//   "title": "This is a not a hittle title",
-//     "description": "This is a another description",
-//       "questions":
-//   [
-//     { "question": "What is JavaScript?", "answer": "A programming language.", "tips": "this a first tip" },
-//   ]
-// }
+export default HomePage;
