@@ -55,62 +55,64 @@ export default function SignupForm({
       } else {
         console.error("An unknown error occurred.");
       }
-      setError("Failed to signup");
+      setError("Failed to Login");
     }
-    return (
-      <div
-        className={cn(
-          "flex justify-center items-center min-h-screen bg-gray-50",
-          className,
-        )}
-        {...props}
-      >
-        <Card className="w-full max-w-md p-6 bg-white shadow-lg rounded-lg">
-          <CardHeader className="text-center">
-            <CardTitle className="text-xl">Welcome Back</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit}>
+  };
+
+  return (
+    <div
+      className={cn(
+        "flex justify-center items-center min-h-screen bg-gray-50",
+        className,
+      )}
+      {...props}
+    >
+      <Card className="w-full max-w-md p-6 bg-white shadow-lg rounded-lg">
+        <CardHeader className="text-center">
+          <CardTitle className="text-xl">Welcome Back</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit}>
+            <div className="grid gap-6">
+              <div className="flex flex-col gap-4"></div>
               <div className="grid gap-6">
-                <div className="flex flex-col gap-4"></div>
-                <div className="grid gap-6">
-                  <div className="grid gap-2">
-                    <Label htmlFor="username">Username</Label>
-                    <Input
-                      id="username"
-                      type="text"
-                      placeholder="Your username"
-                      required
-                      value={username}
-                      onChange={(e) => setUsername(e.target.value)}
-                    />
-                  </div>
-                  <div className="grid gap-2">
-                    <Label htmlFor="password">Password</Label>
-                    <Input
-                      id="password"
-                      type="password"
-                      required
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                    />
-                  </div>
-                  {/* Error Message */}
-                  {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
-                  <Button type="submit" className="w-full mt-4">
-                    Login
-                  </Button>
+                <div className="grid gap-2">
+                  <Label htmlFor="username">Username</Label>
+                  <Input
+                    id="username"
+                    type="text"
+                    placeholder="Your username"
+                    required
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                  />
                 </div>
-                <div className="text-center text-sm mt-4">
-                  Don't have an account?{" "}
-                  <a href="/signup" className="underline underline-offset-4">
-                    Signup
-                  </a>
+                <div className="grid gap-2">
+                  <Label htmlFor="password">Password</Label>
+                  <Input
+                    id="password"
+                    type="password"
+                    required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
                 </div>
+                {/* Error Message */}
+                {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
+                <Button type="submit" className="w-full mt-4">
+                  Login
+                </Button>
               </div>
-            </form>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
+              <div className="text-center text-sm mt-4">
+                Don't have an account?{" "}
+                <a href="/signup" className="underline underline-offset-4">
+                  Signup
+                </a>
+              </div>
+            </div>
+          </form>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
