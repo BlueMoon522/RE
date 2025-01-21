@@ -34,6 +34,7 @@ const HomePage = () => {
 
     fetchPosts();
   }, []);
+  console.log("posts are here", posts);
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
