@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Card from "../../components/common/card/card.jsx";
+import "./home.styles.css";
 
 const HomePage = () => {
+  // (State management code remains the same)
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState(null);
   const [isFormVisible, setIsFormVisible] = useState(false);
@@ -34,7 +37,7 @@ const HomePage = () => {
 
     fetchPosts();
   }, []);
-  console.log("posts are here", posts);
+  console.log("posts are here:", posts);
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -99,114 +102,75 @@ const HomePage = () => {
   };
 
   return (
-    <div className="h-screen bg-gray-50 font-sans relative">
+    <div className="container">
       {/* Header */}
-      <div className="w-full p-6 flex justify-between items-center border-b border-gray-300">
-        <div>
-          <h1 className="text-4xl font-serif text-gray-800">UngaBunga-Notes</h1>
-        </div>
-
-        <button
-          onClick={handleNewPostClick}
-          className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded shadow-md"
-        >
+      <div className="header">
+        <h1>UngaBunga-Notes</h1>
+        <button onClick={handleNewPostClick} className="new-button">
           New
         </button>
       </div>
 
       {/* Content */}
-      <div className="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid-container">
         {error ? (
-          <div className="text-red-500 text-lg col-span-full">{error}</div>
+          <div className="error">{error}</div>
         ) : posts.length > 0 ? (
           posts.map((post) => (
-            <div
-              key={post._id}
-              className="bg-white shadow rounded-lg p-6 relative"
-            >
-              {/* Post Content */}
+            <div key={post._id} className="post-card">
               <div>
-                <h3 className="text-gray-800 font-medium text-lg mb-2">
-                  {post.title}
-                </h3>
-                <p className="text-gray-500 text-sm line-clamp-2">
-                  {post.content}
-                </p>
+                <h3 className="post-title">{post.title}</h3>
+                <p className="post-content">{post.content}</p>
               </div>
-
-              {/* Buttons */}
-              <div className="flex justify-between items-center mt-4">
-                <button
-                  onClick={() => navigate(`/content/${post._id}`)}
-                  className="text-blue-500 text-sm hover:underline"
-                >
+              <div className="post-buttons">
+                <button onClick={() => navigate(`/content/${post._id}`)}>
                   View
                 </button>
-                <button
-                  onClick={() => handleEditClick(post)}
-                  className="text-blue-500 text-sm hover:underline"
-                >
-                  Edit
-                </button>
-                <button className="text-blue-500 text-sm hover:underline">
-                  Delete
-                </button>
+                <button onClick={() => handleEditClick(post)}>Edit</button>
+                <button>Delete</button>
               </div>
             </div>
           ))
         ) : (
-          <p className="text-gray-500 text-center col-span-full">
-            No posts available.
-          </p>
+          <p className="no-posts">No posts available.</p>
         )}
       </div>
 
-      {/* Form Modal */}
+      {/* Modal */}
       {isFormVisible && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <form
-            onSubmit={handleFormSubmit}
-            className="bg-white shadow-md rounded-lg p-6 w-full max-w-md relative"
-          >
-            <h2 className="text-xl font-semibold mb-4">
-              {editMode ? "Edit Post" : "Add New Post"}
-            </h2>
+        <div className="modal">
+          <form onSubmit={handleFormSubmit} className="modal-form">
+            <h2>{editMode ? "Edit Post" : "Add New Post"}</h2>
             <input
               type="text"
               placeholder="Title"
               value={newTitle}
               onChange={(e) => setNewTitle(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded mb-4"
               required
             />
             <textarea
               placeholder="Content: Write a small context for title, max 20 words"
               value={newContent}
               onChange={(e) => setNewContent(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded mb-4"
               rows={4}
               required
             />
             <select
               value={newVisibility}
               onChange={(e) => setNewVisibility(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded mb-4"
               required
             >
               <option value="public">Public</option>
               <option value="private">Private</option>
             </select>
-            <div className="flex justify-between">
-              <button
-                type="submit"
-                className="bg-blue-500 text-white py-2 px-4 rounded"
-              >
+            <div className="buttons">
+              <button type="submit" className="save">
                 {editMode ? "Update Post" : "Add Post"}
               </button>
               <button
                 type="button"
                 onClick={() => setIsFormVisible(false)}
-                className="bg-red-500 text-white py-2 px-4 rounded"
+                className="cancel"
               >
                 Cancel
               </button>

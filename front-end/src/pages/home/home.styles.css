@@ -1,0 +1,136 @@
+.container {
+  min-height: 100vh;
+  background-color: #f9fafb;
+  font-family: sans-serif;
+  position: relative;
+}
+
+.header {
+  width: 100%;
+  padding: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #d1d5db;
+}
+
+.header h1 {
+  font-size: 2rem;
+  font-family: serif;
+  color: #1f2937;
+}
+
+.new-button {
+  background-color: #3b82f6;
+  color: white;
+  padding: 8px 24px;
+  border-radius: 4px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.new-button:hover {
+  background-color: #2563eb;
+}
+
+.grid-container {
+  padding: 24px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 32px;
+}
+
+.post-card {
+  background-color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 24px;
+  position: relative;
+}
+
+.post-title {
+  color: #1f2937;
+  font-weight: 500;
+  font-size: 1.125rem;
+  margin-bottom: 8px;
+}
+
+.post-content {
+  color: #6b7280;
+  font-size: 0.875rem;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.post-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+}
+
+.post-buttons button {
+  color: #3b82f6;
+  font-size: 0.875rem;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+
+.modal-form {
+  background-color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 24px;
+  width: 100%;
+  max-width: 400px;
+  position: relative;
+}
+
+.modal-form h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.modal-form input,
+.modal-form textarea,
+.modal-form select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  margin-bottom: 16px;
+}
+
+.modal-form .buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.modal-form .buttons button {
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.modal-form .buttons .save {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.modal-form .buttons .cancel {
+  background-color: #ef4444;
+  color: white;
+}
