@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Card from "../../components/common/card/card.jsx";
 import "./home.styles.css";
 
 const HomePage = () => {

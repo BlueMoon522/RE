@@ -5,11 +5,12 @@ import Signup from "./pages/signup/page";
 import Submit from "./pages/submit/page";
 import YourPage from "./pages/test/page";
 import EditorPage from "./pages/editor/editor";
-import Sidebar from "./components/common/side-bar";
+import Sidebar from "./components/common/sidebar/side-bar.jsx";
 import UserPostPage from "./pages/createtitle/page";
 import ContentPage from "./pages/contentpage/page";
 import Public from "./pages/public/public";
 import { useQuery } from "@tanstack/react-query";
+import "./App.css"; // Import the CSS file
 
 function App() {
   const { data: authuser } = useQuery({
@@ -31,32 +32,20 @@ function App() {
   });
 
   return (
-    <div className="flex max-w-full mx-auto">
+    <div className="app-container">
       {authuser && (
-        <div
-          style={{
-            width: "250px", // Fixed width for the sidebar
-            position: "fixed", // Sidebar stays fixed on the left
-            height: "100vh", // Full height
-            backgroundColor: "#f4f4f4", // Optional background color for the sidebar
-          }}
-          className="flex-shrink-0"
-        >
+        <div className="sidebar-container">
           <Sidebar />
         </div>
       )}
-      <div className="flex-grow overflow-y-auto p-4 ml-[250px]">
-        {" "}
-        {/* Adjust the left margin to accommodate the sidebar */}
+      <div className="main-content">
         <Routes>
           <Route
             path="/"
             element={authuser ? <Home /> : <Navigate to="login" />}
           />
-          {/* These are just test routes, so not protected */}
           <Route path="/test" element={<YourPage />} />
           <Route path="/editor" element={<EditorPage />} />
-          {/**/}
           <Route
             path="/public"
             element={authuser ? <Public /> : <Navigate to="/login" />}

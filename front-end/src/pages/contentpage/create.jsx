@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "react-quill/dist/quill.snow.css";
 import Editor from "../../components/editor.jsx";
+import "./content.styles.css"; // Import the CSS file
 
 const InputFormPage = ({ initialData, onSubmit, onClose }) => {
   const [title, setTitle] = useState(initialData?.title || ""); // Prefill for updates
@@ -33,24 +34,18 @@ const InputFormPage = ({ initialData, onSubmit, onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
-      <div className="relative w-full max-w-3xl bg-white p-10 rounded-lg shadow-lg max-h-[90vh] overflow-y-auto">
-        <button
-          className="absolute top-4 right-4 bg-red-500 text-white p-2 rounded-full"
-          onClick={onClose}
-        >
+    <div className="form-overlay">
+      <div className="form-container">
+        <button className="close-button" onClick={onClose}>
           ✕
         </button>
-        <h1 className="text-3xl font-bold mb-6 text-center">
+        <h1 className="form-title">
           {isEditMode ? "Edit Content" : "Add Content"}
         </h1>
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="form-content">
           {/* Title */}
           <div>
-            <label
-              htmlFor="title"
-              className="block text-lg font-medium text-gray-700"
-            >
+            <label htmlFor="title" className="form-label">
               Title
             </label>
             <input
@@ -58,17 +53,14 @@ const InputFormPage = ({ initialData, onSubmit, onClose }) => {
               id="title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="mt-2 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-lg"
+              className="form-input"
               placeholder="Enter title"
             />
           </div>
 
           {/* Description */}
           <div>
-            <label
-              htmlFor="description"
-              className="block text-lg font-medium text-gray-700"
-            >
+            <label htmlFor="description" className="form-label">
               Description
             </label>
             <Editor
@@ -79,16 +71,11 @@ const InputFormPage = ({ initialData, onSubmit, onClose }) => {
 
           {/* Questions */}
           <div>
-            <h2 className="text-lg font-medium text-gray-700">
-              Questions, Answers, and Hints
-            </h2>
+            <h2 className="form-subtitle">Questions, Answers, and Hints</h2>
             {questions.map((entry, index) => (
-              <div key={index} className="mt-4 space-y-4 border p-4 rounded-lg">
+              <div key={index} className="question-container">
                 <div>
-                  <label
-                    htmlFor={`question-${index}`}
-                    className="block text-lg font-medium text-gray-700"
-                  >
+                  <label htmlFor={`question-${index}`} className="form-label">
                     Question
                   </label>
                   <input
@@ -102,16 +89,13 @@ const InputFormPage = ({ initialData, onSubmit, onClose }) => {
                         ),
                       )
                     }
-                    className="mt-2 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-lg"
+                    className="form-input"
                     placeholder="Enter question"
                   />
                 </div>
                 {/* Answer */}
                 <div>
-                  <label
-                    htmlFor={`answer-${index}`}
-                    className="block text-lg font-medium text-gray-700"
-                  >
+                  <label htmlFor={`answer-${index}`} className="form-label">
                     Answer
                   </label>
                   <input
@@ -125,16 +109,13 @@ const InputFormPage = ({ initialData, onSubmit, onClose }) => {
                         ),
                       )
                     }
-                    className="mt-2 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-lg"
+                    className="form-input"
                     placeholder="Enter answer"
                   />
                 </div>
                 {/* Tips */}
                 <div>
-                  <label
-                    htmlFor={`tips-${index}`}
-                    className="block text-lg font-medium text-gray-700"
-                  >
+                  <label htmlFor={`tips-${index}`} className="form-label">
                     Tips/Hints
                   </label>
                   <input
@@ -148,7 +129,7 @@ const InputFormPage = ({ initialData, onSubmit, onClose }) => {
                         ),
                       )
                     }
-                    className="mt-2 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-lg"
+                    className="form-input"
                     placeholder="Enter tip for the answer"
                   />
                 </div>
@@ -157,7 +138,7 @@ const InputFormPage = ({ initialData, onSubmit, onClose }) => {
                 <button
                   type="button"
                   onClick={() => handleRemoveQuestion(index)}
-                  className="mt-2 bg-red-500 text-white px-4 py-2 rounded-lg"
+                  className="remove-question-btn"
                 >
                   Remove Question
                 </button>
@@ -171,16 +152,13 @@ const InputFormPage = ({ initialData, onSubmit, onClose }) => {
                   { question: "", answer: "", tips: "" },
                 ])
               }
-              className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg"
+              className="add-question-btn"
             >
               + Add Question
             </button>
           </div>
 
-          <button
-            type="submit"
-            className="w-full bg-blue-500 text-white py-3 px-4 rounded-lg text-lg font-semibold hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-300"
-          >
+          <button type="submit" className="submit-btn">
             Submit
           </button>
         </form>

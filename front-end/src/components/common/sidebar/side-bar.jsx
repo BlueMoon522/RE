@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import "./sidebar.styles.css"; // Import the CSS file
 
 const Sidebar = () => {
   const [data, setData] = useState({});
@@ -51,20 +52,20 @@ const Sidebar = () => {
   }, []);
 
   return (
-    <div className="w-64 h-screen bg-gray-800 text-white flex flex-col">
-      <div className="p-4 font-bold text-lg border-b border-gray-700">
+    <div className="sidebar">
+      <div className="sidebar-header">
         <Link to="/">{data.username || "Guest"}</Link>
       </div>
-      <ul className="flex-grow">
-        <li className="p-4 hover:bg-gray-700 cursor-pointer">
+      <ul className="sidebar-list">
+        <li className="sidebar-list-item">
           <Link to="/">Home</Link>
         </li>
-        <li className="p-4 hover:bg-gray-700 cursor-pointer">
+        <li className="sidebar-list-item">
           <Link to="/public">Public</Link>
         </li>
       </ul>
-      <div className="p-4 hover:bg-gray-700 cursor-pointer border-t border-gray-700">
-        <button onClick={handleLogout} className="w-full text-left">
+      <div className="sidebar-footer">
+        <button onClick={handleLogout} className="sidebar-button">
           Logout
         </button>
       </div>
