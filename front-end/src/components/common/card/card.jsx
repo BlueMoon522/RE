@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import "./card.styles.css";
+import { Bookmark } from "lucide-react";
 
 export default function Card({
   title = "No title",
@@ -13,9 +14,9 @@ export default function Card({
         <div className="line"></div>
         <div className="buttons">
           {/*Bookmark button*/}
-          <button className="button bookmark">
-            <span className="icon">🔖</span> Bookmark
-          </button>
+          <div className="bookmark">
+            <Bookmark size={20} color="#fff" />
+          </div>
           <button className="button">View</button>
           <button className="button">Edit</button>
           <button className="button">Delete</button>

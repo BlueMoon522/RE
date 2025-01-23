@@ -2,63 +2,82 @@
 .card {
   font-family: Montserrat, sans-serif;
   width: 300px;
-  height: 250px;
-  translate: -6px -6px;
-  background: #ff66a3;
+  /* Adjust width as needed */
+  max-width: 100%;
+  /* Make it responsive */
+  height: auto;
+  /* Remove fixed height for better responsiveness */
+  padding: 1rem;
+  /* Add padding for better spacing */
   border: 3px solid #000000;
   box-shadow: 12px 12px 0 #000000;
+  border-radius: 8px;
+  /* Add rounded corners for a more modern look */
   overflow: hidden;
   position: relative;
-  /* For better placement of static elements */
-  transition: all 0.3s ease;
 }
 
 .head {
   font-family: Montserrat, sans-serif;
-  font-size: 14px;
-  font-weight: 900;
-  width: 100%;
-  height: 32px;
-  background: #ffffff;
-  padding: 5px 12px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding: 1rem 0;
+  margin-bottom: 1rem;
   color: #000000;
-  border-bottom: 3px solid #000000;
+  border-bottom: 2px solid #000000;
 }
 
 .content {
-  padding: 8px 12px;
-  font-size: 14px;
-  font-weight: 600;
-  height: 120px;
-  /* Ensures content does not push static elements */
+  font-size: 1rem;
+  color: #6b7280;
+  margin-bottom: 1rem;
   overflow: hidden;
+  text-overflow: ellipsis;
+  /* Show ellipsis for long descriptions */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  /* Show 3 lines of description */
+  -webkit-box-orient: vertical;
 }
 
 .line {
   width: 100%;
-  height: 3px;
+  height: 2px;
   background-color: #000000;
-  margin: 0;
-  position: absolute;
-  bottom: 70px;
-  /* Static placement above buttons */
+  margin: 0.5rem 0;
 }
 
 .buttons {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: center;
+  margin-top: 1rem;
+}
+
+.bookmark {
   position: absolute;
-  bottom: 10px;
-  /* Keeps buttons at the bottom */
-  width: 100%;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: 2px solid #000;
+  border-radius: 50%;
+  background-color: #f59e0b;
+  cursor: pointer;
+}
+
+.bookmark:hover {
+  background-color: #ef4444;
 }
 
 .button {
-  padding: 5px 10px;
-  border: 3px solid #000000;
+  padding: 0.5rem 1rem;
+  border: 2px solid #000000;
   box-shadow: 3px 3px 0 #000000;
-  font-weight: 750;
+  font-weight: bold;
   background: #4ade80;
   transition: all 0.3s ease;
   cursor: pointer;
@@ -75,7 +94,6 @@
   box-shadow: 0 0 0 #000000;
 }
 
-/* Specific style for the bookmark button */
 .bookmark {
   display: flex;
   align-items: center;
