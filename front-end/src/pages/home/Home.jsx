@@ -123,6 +123,8 @@ const HomePage = () => {
         )}
       </div>
       {/* Content */}
+      {/*this renders the samething that Card component does*/}
+      {/*
       <div className="grid-container">
         {error ? (
           <div className="error">{error}</div>
@@ -146,6 +148,7 @@ const HomePage = () => {
           <p className="no-posts">No posts available.</p>
         )}
       </div>
+      */}
 
       {/* Modal */}
       {isFormVisible && (
