@@ -17,7 +17,7 @@ export const protectedRoutes = async (req, res, next) => {
       return res.status(401).json({ error: "Token not found" });
     }
     const decoded = jwt.verify(token, process.env.SECRET_KEY);
-    console.log("decoded:", decoded);
+    // console.log("decoded:", decoded);
 
     if (!decoded) {
       console.log("couldnot decode cookie");

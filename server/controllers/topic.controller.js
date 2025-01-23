@@ -114,3 +114,39 @@ export const userPublicTopics = async (req, res) => {
     return res.status(500).json({ error: "Server Error" });
   }
 };
+//route to bookmark the topics
+export const bookmarkTopics = async (req, res) => {
+  console.log("in topic bookmark route");
+  try {
+    const id = req.params.id;
+    const userId = req.user._id.toString();
+
+    let existingUser = await User.findById(userId);
+    if (!existingUser) {
+      return res.status(404).json({ error: "user not found" });
+    }
+
+    const bookmarkExists = existingUser.bookmarks.some(
+      (bookmark) => bookmark.toString() === id,
+    );
+
+    if (bookmarkExists) {
+      existingUser.bookmarks = existingUser.bookmarks.filter(
+        (bookmark) => bookmark.toString() !== id,
+      );
+
+      console.log("Bookmark removed");
+      existingUser = await existingUser.save();
+      console.log("after saving existingUser");
+      return res.status(200).json({ message: "Bookmark removed" });
+    } else {
+      existingUser.bookmarks.push(id);
+      console.log("Bookmark added");
+      existingUser = await existingUser.save();
+      console.log("after saving existingUser and adding bookmark");
+      return res.status(200).json({ message: "Bookmark Added" });
+    }
+  } catch (error) {
+    return res.status(500).json({ error: "Server Error" });
+  }
+};
