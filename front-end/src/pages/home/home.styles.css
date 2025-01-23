@@ -1,16 +1,19 @@
+/* General Styles */
 .container {
   min-height: 100vh;
   background-color: #f9fafb;
   font-family: sans-serif;
-  position: relative;
+  padding: 0 2rem;
+  /* Add padding for better layout */
 }
 
+/* Header */
 .header {
-  width: 100%;
-  padding: 24px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 1.5rem 0;
+  /* Adjust padding for better spacing */
   border-bottom: 1px solid #d1d5db;
 }
 
@@ -33,18 +36,23 @@
   background-color: #2563eb;
 }
 
+/* Grid Container */
 .grid-container {
-  padding: 24px;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 32px;
+  gap: 1rem;
+  /* Adjust gap for better spacing on smaller screens */
+  margin-top: 1.5rem;
+  /* Add margin for better separation */
 }
 
+/* Post Card */
 .post-card {
   background-color: white;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
-  padding: 24px;
+  padding: 1.5rem;
+  /* Adjust padding for better spacing */
   position: relative;
 }
 
@@ -68,7 +76,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 16px;
+  margin-top: 1rem;
+  /* Adjust margin for better spacing */
 }
 
 .post-buttons button {
@@ -78,6 +87,7 @@
   cursor: pointer;
 }
 
+/* Modal */
 .modal {
   position: fixed;
   inset: 0;
@@ -92,7 +102,8 @@
   background-color: white;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
-  padding: 24px;
+  padding: 2rem;
+  /* Adjust padding for better spacing */
   width: 100%;
   max-width: 400px;
   position: relative;
@@ -120,17 +131,3 @@
 }
 
 .modal-form .buttons button {
-  padding: 8px 16px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.modal-form .buttons .save {
-  background-color: #3b82f6;
-  color: white;
-}
-
-.modal-form .buttons .cancel {
-  background-color: #ef4444;
-  color: white;
-}

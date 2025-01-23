@@ -23,35 +23,26 @@
 /* App.css */
 .app-container {
   display: flex;
-  /* flex */
-  max-width: 100%;
-  /* max-w-full */
+  max-width: 1280px;
   margin: 0 auto;
-  /* mx-auto */
+  padding: 2rem;
 }
 
 .sidebar-container {
   width: 250px;
-  /* Fixed width for the sidebar */
   position: fixed;
-  /* Sidebar stays fixed on the left */
+  left: 0;
+  top: 0;
   height: 100vh;
-  /* Full height */
   background-color: #f4f4f4;
-  /* Light gray background */
   flex-shrink: 0;
-  /* flex-shrink-0 */
 }
 
 .main-content {
   flex-grow: 1;
-  /* flex-grow */
   overflow-y: auto;
-  /* overflow-y-auto */
   padding: 1rem;
-  /* p-4 */
   margin-left: 250px;
-  /* ml-[250px] to match the sidebar width */
 }
 
 @keyframes logo-spin {

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Card from "../../components/common/card/card.jsx";
 import "./home.styles.css";
 
 const HomePage = () => {
@@ -109,7 +110,18 @@ const HomePage = () => {
           New
         </button>
       </div>
-
+      {/*Using cards*/}
+      <div className="grid-container">
+        {error ? (
+          <div className="error">{error}</div>
+        ) : posts.length > 0 ? (
+          posts.map((post, index) => (
+            <Card key={index} title={post.title} description={post.content} />
+          ))
+        ) : (
+          <p className="no-posts">No posts available.</p>
+        )}
+      </div>
       {/* Content */}
       <div className="grid-container">
         {error ? (
