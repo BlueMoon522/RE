@@ -148,7 +148,7 @@ export const getBookmarks = async (req, res) => {
           let topicObject = existingTopic.toObject();
           console.log("topicObject", topicObject);
           if (topicObject.visibility == "public") {
-            bookmarks.push(bookmarksArray[index]);
+            bookmarks.push(topicObject);
           }
         }
       }

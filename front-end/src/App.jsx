@@ -11,6 +11,7 @@ import ContentPage from "./pages/contentpage/page";
 import Public from "./pages/public/public";
 import { useQuery } from "@tanstack/react-query";
 import "./App.css"; // Import the CSS file
+import Bookmarks from "./pages/bookmarks/bookmarks.jsx";
 
 function App() {
   const { data: authuser } = useQuery({
@@ -44,11 +45,17 @@ function App() {
             path="/"
             element={authuser ? <Home /> : <Navigate to="login" />}
           />
+          {/*These are just test routes so they are not protected*/}
           <Route path="/test" element={<YourPage />} />
           <Route path="/editor" element={<EditorPage />} />
+          {/**/}
           <Route
             path="/public"
             element={authuser ? <Public /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/bookmarks"
+            element={authuser ? <Bookmarks /> : <Navigate to="/login" />}
           />
           <Route
             path="/content/:id"

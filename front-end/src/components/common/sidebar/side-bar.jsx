@@ -63,6 +63,9 @@ const Sidebar = () => {
         <li className="sidebar-list-item">
           <Link to="/public">Public</Link>
         </li>
+        <li className="sidebar-list-item">
+          <Link to="/bookmarks">Bookmarks</Link>
+        </li>
       </ul>
       <div className="sidebar-footer">
         <button onClick={handleLogout} className="sidebar-button">
