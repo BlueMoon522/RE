@@ -1,6 +1,7 @@
 import express from "express";
 import {
   authedUser,
+  getBookmarks,
   getInfo,
   loginUser,
   logout,
@@ -10,6 +11,7 @@ import { protectedRoutes } from "../middleware/protectedRoutes.js";
 
 const router = express.Router();
 
+router.get("/bookmarks", protectedRoutes, getBookmarks);
 router.post("/signup", userCreate);
 router.post("/login", loginUser);
 router.post("/logout", protectedRoutes, logout);

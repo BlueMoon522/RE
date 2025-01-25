@@ -121,3 +121,41 @@ export const bookmark = async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 };
+//get all the bookmarked contents
+export const getBookmarks = async (req, res) => {
+  console.log("inside the get bookmarks function");
+  try {
+    //req.user._id gives the userId that i have in a cookie
+    let bookmarks = [];
+    const userId = req.user._id;
+    const existingUser = await User.findById(userId);
+    if (!existingUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    //why was this done?
+    //Mongoose uses Proxies for handling document properties. This sometimes causes unexpected behavior when logging or accessing certain fields directly.
+    // To correctly access and log the bookmarks array, you can convert the Mongoose document into a plain JavaScript object using.toObject() or.lean().
+    const userObject = existingUser.toObject();
+    //finding the topics by their id and checking if the they are public or not?
+    const bookmarksArray = userObject.bookmarks;
+    console.log(bookmarksArray);
+    console.log(bookmarksArray.length);
+    for (let index = 0; index < bookmarksArray.length; index++) {
+      if (bookmarksArray[index] != null) {
+        let topicId = bookmarksArray[index];
+        let existingTopic = await Topic.findById(topicId);
+        if (existingTopic) {
+          let topicObject = existingTopic.toObject();
+          console.log("topicObject", topicObject);
+          if (topicObject.visibility == "public") {
+            bookmarks.push(bookmarksArray[index]);
+          }
+        }
+      }
+    }
+    return res.status(200).json(bookmarks);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "Server Error" });
+  }
+};

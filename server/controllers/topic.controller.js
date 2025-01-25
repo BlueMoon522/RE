@@ -116,37 +116,39 @@ export const userPublicTopics = async (req, res) => {
 };
 //route to bookmark the topics
 export const bookmarkTopics = async (req, res) => {
-  console.log("in topic bookmark route");
+  console.log("In topic bookmark route");
   try {
-    const id = req.params.id;
-    const userId = req.user._id.toString();
+    const id = req.params.id; // The topic ID to bookmark
+    const userId = req.user._id.toString(); // The user ID from the request
 
+    // Find the user by ID
     let existingUser = await User.findById(userId);
     if (!existingUser) {
-      return res.status(404).json({ error: "user not found" });
+      return res.status(404).json({ error: "User not found" });
     }
 
+    // Check if the topic is already bookmarked
     const bookmarkExists = existingUser.bookmarks.some(
-      (bookmark) => bookmark.toString() === id,
+      (bookmark) => bookmark && bookmark.toString() === id,
     );
 
     if (bookmarkExists) {
+      console.log("Bookmark exists, removing it...");
+      // Remove the bookmark
       existingUser.bookmarks = existingUser.bookmarks.filter(
-        (bookmark) => bookmark.toString() !== id,
+        (bookmark) => bookmark && bookmark.toString() !== id,
       );
-
-      console.log("Bookmark removed");
-      existingUser = await existingUser.save();
-      console.log("after saving existingUser");
+      await existingUser.save();
       return res.status(200).json({ message: "Bookmark removed" });
     } else {
+      console.log("Bookmark does not exist, adding it...");
+      // Add the new bookmark
       existingUser.bookmarks.push(id);
-      console.log("Bookmark added");
-      existingUser = await existingUser.save();
-      console.log("after saving existingUser and adding bookmark");
-      return res.status(200).json({ message: "Bookmark Added" });
+      await existingUser.save();
+      return res.status(200).json({ message: "Bookmark added" });
     }
   } catch (error) {
+    console.error("Error in bookmarkTopics:", error);
     return res.status(500).json({ error: "Server Error" });
   }
 };
