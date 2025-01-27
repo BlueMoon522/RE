@@ -2,22 +2,70 @@ import PropTypes from "prop-types";
 import "./card.styles.css";
 import { Bookmark } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Card({
   title = "No title",
   description = "No description provided",
   id = "",
-  handleEdit = "",
-  imageUrl = "", // Optional image URL for the card
+  handleEdit = () => { },
+  topicUserId = "", // The user ID from the topic JSON
+  userId = "",
 }) {
   const navigate = useNavigate();
+
   const [isDeleteConfirmationVisible, setIsDeleteConfirmationVisible] =
     useState(false);
   const [confirmationTitle, setConfirmationTitle] = useState("");
+  const [currentUserId, setCurrentUserId] = useState(null); // Current logged-in user's ID
+  const [isLoadingUserId, setIsLoadingUserId] = useState(true); // To handle loading state for user ID
+
+  // Fetch the current user's ID from the API
+  useEffect(() => {
+    const fetchCurrentUserId = async () => {
+      try {
+        const response = await fetch("/api/user/info", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          console.log(data);
+          setCurrentUserId(data._id); // Assuming the response contains the user's ID as `id`
+        } else {
+          console.error("Failed to fetch user info:", response.statusText);
+        }
+      } catch (error) {
+        console.error("Error fetching user info:", error);
+      } finally {
+        setIsLoadingUserId(false);
+      }
+    };
+
+    fetchCurrentUserId();
+  }, []);
 
   const handleBookmark = async () => {
-    // ... your existing bookmark logic here ...
+    try {
+      const response = await fetch(`/api/user/post/bookmark/${id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log("Success:", result);
+      } else {
+        console.error("Error:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
 
   const handleDeleteClick = () => {
@@ -37,7 +85,6 @@ export default function Card({
         if (response.ok) {
           const result = await response.json();
           console.log("Success:", result);
-          // Call parent component function to update posts (if applicable)
         } else {
           console.error("Error:", response.statusText);
         }
@@ -56,26 +103,42 @@ export default function Card({
     setIsDeleteConfirmationVisible(false);
   };
 
+  // Determine if the current user is the creator of the topic
+  console.log("currentUserId", currentUserId);
+  console.log("topic user Id", userId);
+  const isCreator = currentUserId === userId;
+
+  if (isLoadingUserId) {
+    return <div>Loading...</div>; // Render a loading state while fetching user ID
+  }
+
   return (
     <div className="card">
-      {imageUrl && <img src={imageUrl} alt={title} className="card-image" />}
       <div className="card-content">
         <div className="head">{title}</div>
         <div className="content">{description}</div>
         <div className="line"></div>
         <div className="buttons">
-          <button className="bookmark" onClick={handleBookmark}>
-            <Bookmark size={30} color="#fff" />
-          </button>
           <button className="button" onClick={() => navigate(`/content/${id}`)}>
             View
           </button>
-          <button className="button" onClick={handleEdit}>
-            Edit
-          </button>
-          <button className="button" onClick={handleDeleteClick}>
-            Delete
-          </button>
+          {!isCreator && (
+            <>
+              <button className="bookmark" onClick={handleBookmark}>
+                <Bookmark size={30} color="#fff" />
+              </button>
+            </>
+          )}
+          {isCreator && (
+            <>
+              <button className="button" onClick={handleEdit}>
+                Edit
+              </button>
+              <button className="button" onClick={handleDeleteClick}>
+                Delete
+              </button>
+            </>
+          )}
         </div>
       </div>
 
@@ -116,5 +179,6 @@ Card.propTypes = {
   description: PropTypes.string,
   id: PropTypes.string,
   handleEdit: PropTypes.func,
-  imageUrl: PropTypes.string,
+  topicUserId: PropTypes.string.isRequired, // Ensure `topicUserId` is provided
+  userId: PropTypes.string,
 };

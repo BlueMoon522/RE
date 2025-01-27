@@ -120,6 +120,7 @@ const HomePage = () => {
               description={post.content}
               id={post._id}
               handleEdit={() => handleEditClick(post)}
+              userId={post.user}
             />
           ))
         ) : (
