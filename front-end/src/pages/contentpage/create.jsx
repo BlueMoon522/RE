@@ -2,6 +2,7 @@ import { useState } from "react";
 import "react-quill/dist/quill.snow.css";
 import Editor from "../../components/editor.jsx";
 import "./content.styles.css"; // Import the CSS file
+import PropTypes from "prop-types";
 
 const InputFormPage = ({ initialData, onSubmit, onClose }) => {
   const [title, setTitle] = useState(initialData?.title || ""); // Prefill for updates
@@ -166,5 +167,20 @@ const InputFormPage = ({ initialData, onSubmit, onClose }) => {
     </div>
   );
 };
-
+InputFormPage.propTypes = {
+  initialData: PropTypes.shape({
+    _id: PropTypes.string,
+    title: PropTypes.string,
+    description: PropTypes.string,
+    questions: PropTypes.arrayOf(
+      PropTypes.shape({
+        question: PropTypes.string,
+        answer: PropTypes.string,
+        tips: PropTypes.string,
+      }),
+    ),
+  }),
+  onSubmit: PropTypes.func.isRequired, // Function to handle form submission
+  onClose: PropTypes.func.isRequired, // Function to close the form
+};
 export default InputFormPage;

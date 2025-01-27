@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import Card from "../../components/common/card/card.jsx";
 import "./home.styles.css";
 
@@ -13,7 +12,6 @@ const HomePage = () => {
   const [newTitle, setNewTitle] = useState("");
   const [newContent, setNewContent] = useState("");
   const [newVisibility, setNewVisibility] = useState("public");
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -116,7 +114,13 @@ const HomePage = () => {
           <div className="error">{error}</div>
         ) : posts.length > 0 ? (
           posts.map((post, index) => (
-            <Card key={index} title={post.title} description={post.content} />
+            <Card
+              key={index}
+              title={post.title}
+              description={post.content}
+              id={post._id}
+              handleEdit={() => handleEditClick(post)}
+            />
           ))
         ) : (
           <p className="no-posts">No posts available.</p>
