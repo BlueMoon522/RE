@@ -9,7 +9,6 @@ export default function Card({
   description = "No description provided",
   id = "",
   handleEdit = () => { },
-  topicUserId = "", // The user ID from the topic JSON
   userId = "",
 }) {
   const navigate = useNavigate();

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Card from "../../components/common/card/card";
 
 const PublicPage = () => {
   const [posts, setPosts] = useState([]); // Ensure posts is an array
@@ -32,6 +33,7 @@ const PublicPage = () => {
     navigate(`/content/${id}`);
   };
 
+  console.log(posts);
   return (
     <div className="flex flex-col items-center min-h-screen bg-gray-100 py-6">
       <h1 className="text-3xl font-bold mb-6 text-gray-800">Public Topics</h1>
@@ -41,28 +43,15 @@ const PublicPage = () => {
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full px-6">
             {posts.length > 0 ? (
-              posts.map((post) => (
-                <div
-                  key={post._id}
-                  className="bg-white shadow-md rounded-lg p-4 cursor-pointer"
-                >
-                  <h2
-                    className="text-xl font-semibold mb-2 text-gray-900 relative group"
-                    onClick={() => handlePostClick(post._id)}
-                  >
-                    {post.title}
-                    <span className="absolute hidden group-hover:block bg-gray-700 text-white text-sm rounded-lg p-2 top-full mt-2 shadow-lg">
-                      {post.content}
-                    </span>
-                  </h2>
-                  <div className="text-gray-600 text-sm">
-                    {new Date(post.createdAt).toLocaleDateString()}
-                  </div>
-                  <p className="text-gray-500 mt-2">
-                    {post.visibility.charAt(0).toUpperCase() +
-                      post.visibility.slice(1)}
-                  </p>
-                </div>
+              posts.map((post, index) => (
+                <Card
+                  key={index}
+                  title={post.title}
+                  description={post.content}
+                  id={post._id}
+                  handleEdit={() => handleEditClick(post)}
+                  userId={post.user}
+                />
               ))
             ) : (
               <p className="text-gray-500 text-center col-span-full">
