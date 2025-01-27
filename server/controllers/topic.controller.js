@@ -1,3 +1,4 @@
+import Content from "../models/content.model.js";
 import Topic from "../models/topic.model.js";
 import User from "../models/user.model.js";
 
@@ -83,10 +84,26 @@ export const deleteTopic = async (req, res) => {
   try {
     const ID = req.params.id;
     const topic = await Topic.findById(req.params.id);
+    //to find all the contents with this as topic ID
+    const contents = await Content.find({ topicId: ID });
+    console.log("content", contents);
+    //deleting these contents
+
+    const contentIds = contents.map((content) => content._id);
+    console.log("contentIds", contentIds);
+    console.log(contentIds.length);
+    console.log(contentIds[1]);
+
+    for (let i = 0; i <= contentIds.length - 1; i++) {
+      console.log("inside the loop");
+      await Content.findByIdAndDelete(contentIds[i]);
+      console.log(`Deleted the content with id${contentIds[i]}`);
+    }
     if (!topic) {
-      return res.staus(404).json({ error: "Post not found" });
+      return res.status(404).json({ error: "Post not found" });
     }
     await Topic.findByIdAndDelete(ID);
+    console.log("deleted");
     res.status(200).json({ message: "Deletion successful" });
   } catch (error) {
     console.log(error);
