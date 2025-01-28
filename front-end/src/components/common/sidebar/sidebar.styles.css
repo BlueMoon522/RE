@@ -10,6 +10,8 @@
   /* text-white */
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+  /* Prevent overflow */
 }
 
 .sidebar-header {
@@ -26,6 +28,8 @@
 .sidebar-list {
   flex-grow: 1;
   /* flex-grow */
+  overflow-y: auto;
+  /* Allow vertical scrolling if content overflows */
 }
 
 .sidebar-list-item {

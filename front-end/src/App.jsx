@@ -10,7 +10,7 @@ import UserPostPage from "./pages/createtitle/page";
 import ContentPage from "./pages/contentpage/page";
 import Public from "./pages/public/public";
 import { useQuery } from "@tanstack/react-query";
-import "./App.css"; // Import the CSS file
+import "./App.css";
 import Bookmarks from "./pages/bookmarks/bookmarks.jsx";
 
 function App() {

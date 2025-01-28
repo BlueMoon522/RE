@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 
 const RightPanel = ({ isPanelOpen, onClose, fetchUrl }) => {
   const [loading, setLoading] = useState(true);
@@ -61,3 +62,9 @@ const RightPanel = ({ isPanelOpen, onClose, fetchUrl }) => {
 };
 
 export default RightPanel;
+
+// RightPanel.propTypes = {
+//   isPanelOpen: PropTypes.string,
+//   onclose: PropTypes.string,
+//   fetchUrl: PropTypes.string,
+// };
