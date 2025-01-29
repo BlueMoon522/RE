@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import InputFormPage from "./create";
-
-import "./content.styles.css"; // Import the CSS file
+import "./content.styles.css"; // Updated CSS
 
 const ContentPage = () => {
   const { id } = useParams();
@@ -34,7 +33,6 @@ const ContentPage = () => {
 
     fetchContent();
   }, [id]);
-  console.log("topics", topics);
 
   const handleTitleClick = (topicId) => {
     setActiveTopicId(activeTopicId === topicId ? null : topicId);
@@ -92,39 +90,34 @@ const ContentPage = () => {
   };
 
   return (
-    <div className="flex flex-col items-center min-h-screen bg-gray-100 py-6">
-      <h1 className="text-3xl font-bold mb-6 text-gray-800">Topic Contents</h1>
+    <div className="content-container">
+      <h1 className="page-title">Topic Contents</h1>
       <button onClick={handleAddContentClick} className="new-button">
         New
       </button>
       {error ? (
-        <div className="text-red-500 text-lg">
-          No contents for the topic yet!!
-        </div>
+        <div className="error-message">No contents for the topic yet!!</div>
       ) : (
-        <div className="w-full px-6 max-w-5xl">
+        <div className="topics-container">
           {topics.map((topic) => (
-            <div
-              key={topic._id}
-              className="bg-white shadow-md rounded-lg p-4 mb-4"
-            >
-              <div className="flex items-center justify-between">
+            <div key={topic._id} className="topic-card">
+              <div className="topic-header">
                 <h2
-                  className="text-xl font-semibold mb-2 text-blue-600 cursor-pointer hover:underline"
+                  className="topic-title"
                   onClick={() => handleTitleClick(topic._id)}
                 >
                   {topic.title || "Untitled Topic"}
                 </h2>
-                <div className="flex space-x-2">
+                <div className="button-group">
                   <button
                     onClick={() => handleEditContentClick(topic)}
-                    className="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600"
+                    className="edit-button"
                   >
                     Edit
                   </button>
                   <button
                     onClick={() => handleQuizButtonClick(topic._id)}
-                    className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
+                    className="quiz-button"
                   >
                     Quiz
                   </button>
@@ -132,43 +125,40 @@ const ContentPage = () => {
               </div>
 
               {activeTopicId === topic._id && (
-                <div className="mt-4 border-t border-gray-300 pt-4">
-                  <div className="text-gray-700 mb-2">
+                <div className="topic-details">
+                  <p>
                     <strong>Description:</strong>
-                    <div
-                      className="mt-1"
-                      dangerouslySetInnerHTML={{ __html: topic.description }}
-                    />
-                  </div>
-                  <div className="text-gray-700 mb-2">
+                  </p>
+                  <div
+                    className="topic-description"
+                    dangerouslySetInnerHTML={{ __html: topic.description }}
+                  />
+                  <p>
                     <strong>Created At:</strong>{" "}
                     {new Date(topic.createdAt).toLocaleString()}
-                  </div>
-                  <div className="text-gray-700 mb-2">
+                  </p>
+                  <p>
                     <strong>Updated At:</strong>{" "}
                     {new Date(topic.updatedAt).toLocaleString()}
-                  </div>
-                  <div className="text-gray-700">
+                  </p>
+                  <p>
                     <strong>Questions:</strong>
-                    <ul className="list-disc list-inside mt-1">
-                      {topic.questions.map((q, index) => (
-                        <li key={q._id} className="mb-2">
-                          <p>
-                            <strong>Question Number:</strong> {index + 1}
-                          </p>
-                          <p>
-                            <strong>Question:</strong> {q.question}
-                          </p>
-                          <p>
-                            <strong>Answer:</strong> {q.answer}
-                          </p>
-                          <p>
-                            <strong>Tips:</strong> {q.tips}
-                          </p>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+                  </p>
+                  <ul className="question-list">
+                    {topic.questions.map((q, index) => (
+                      <li key={q._id} className="question-item">
+                        <p>
+                          <strong>Question {index + 1}:</strong> {q.question}
+                        </p>
+                        <p>
+                          <strong>Answer:</strong> {q.answer}
+                        </p>
+                        <p>
+                          <strong>Tips:</strong> {q.tips}
+                        </p>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               )}
             </div>
