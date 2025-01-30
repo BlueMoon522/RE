@@ -560,6 +560,10 @@
   background-color: #28a745;
 }
 
+.delete-button {
+  background-color: #ff0000;
+}
+
 .quiz-button:hover {
   background-color: #218838;
 }

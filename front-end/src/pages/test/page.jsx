@@ -1,34 +1,44 @@
-// App.js
+import React, { useState } from "react";
 
-import Card from "./card";
-import "./test.css";
-
-const App = () => {
-  const data = [
-    { title: "Abc", description: "This is the first card description." },
-    { title: "Def", description: "This is the second card description." },
-    { title: "Ghi", description: "This is the third card description." },
-    { title: "Jkl", description: "This is the fourth card description." },
-    { title: "Mno", description: "This is the fifth card description." },
-    { title: "Pqr", description: "This is the sixth card description." },
-  ];
+const TitleComponent = () => {
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
 
   return (
-    <div className="app">
-      {/* Header Section */}
-      <header className="header">
-        <h1 className="app-title">My Awesome App</h1>
-        <div className="underline"></div>
-      </header>
-
-      {/* Cards Section */}
-      <div className="cards-container">
-        {data.map((item, index) => (
-          <Card key={index} title={item.title} description={item.description} />
-        ))}
+    <div style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
+      <div style={{ marginBottom: "20px" }}>
+        <input
+          type="text"
+          placeholder="Enter title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          style={{
+            fontSize: "24px",
+            fontWeight: "bold",
+            border: "none",
+            outline: "none",
+            width: "100%",
+          }}
+        />
+      </div>
+      <div>
+        <textarea
+          placeholder="Type something about the title..."
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          style={{
+            width: "100%",
+            height: "150px",
+            fontSize: "16px",
+            border: "1px solid #ccc",
+            borderRadius: "4px",
+            padding: "10px",
+            outline: "none",
+          }}
+        />
       </div>
     </div>
   );
 };
 
-export default App;
+export default TitleComponent;

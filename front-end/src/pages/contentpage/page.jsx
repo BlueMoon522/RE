@@ -89,6 +89,21 @@ const ContentPage = () => {
     }
   };
 
+  const handleDeleteContent = async (id) => {
+    try {
+      await fetch(`/api/content/${id}`, {
+        method: "DELETE",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      console.log("Deleted");
+      console.log("id is :", id);
+    } catch (error) {
+      console.error("Error saving content:", error);
+    }
+  };
   return (
     <div className="content-container">
       <h1 className="page-title">Topic Contents</h1>
@@ -120,6 +135,12 @@ const ContentPage = () => {
                     className="quiz-button"
                   >
                     Quiz
+                  </button>
+                  <button
+                    onClick={() => handleDeleteContent(topic._id)}
+                    className="delete-button"
+                  >
+                    Delete
                   </button>
                 </div>
               </div>
