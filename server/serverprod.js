@@ -21,7 +21,7 @@ app.use(
   cors({
     origin: "http://localhost:5000", //if u dont set origin it doesnot work??IDK why
     credentials: true, //to send and receive cookie
-  }),
+  })
 );
 
 app.use(cookieParser());
@@ -32,7 +32,7 @@ app.use("/api/user/post", topicRoutes);
 app.use("/api/editor", editorRoutes);
 app.use("/api/content", contentRoutes);
 
-app.use(express.static(path.join(__dirname, "/front-end/dist")));
+app.use(express.static(path.join(__dirname, "/../front-end/dist")));
 
 app.get("*", (req, res) => {
   res.sendFile(path.resolve(__dirname, "front-end", "dist", "index.html"));

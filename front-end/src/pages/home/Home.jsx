@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import Card from "../../components/common/card/card.jsx";
 import "./home.styles.css";
+import getUID from "../../hooks/getuserId.jsx";
 
 const HomePage = () => {
   // (State management code remains the same)
+  const [UID, setUID] = useState(null);
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState(null);
   const [isFormVisible, setIsFormVisible] = useState(false);
@@ -12,6 +14,17 @@ const HomePage = () => {
   const [newTitle, setNewTitle] = useState("");
   const [newContent, setNewContent] = useState("");
   const [newVisibility, setNewVisibility] = useState("public");
+  const [isLoading, setIsLoading] = useState(true);
+
+  //getting the UID
+  useEffect(() => {
+    (async () => {
+      const userId = await getUID();
+      setUID(userId);
+      setIsLoading(false);
+    })();
+  }, []);
+  console.log("uid is here", UID);
 
   useEffect(() => {
     const fetchPosts = async () => {
