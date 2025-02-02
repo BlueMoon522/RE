@@ -1,7 +1,7 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/home/Home";
 import Login from "./pages/login/login";
-import Signup from "./pages/signup/page";
+import Signup from "./pages/signup/signup.jsx";
 import Submit from "./pages/submit/page";
 import YourPage from "./pages/test/page";
 import EditorPage from "./pages/editor/editor";

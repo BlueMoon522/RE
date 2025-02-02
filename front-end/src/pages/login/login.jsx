@@ -44,7 +44,7 @@ export default function LoginForm() {
   };
 
   return (
-    <div>
+    <div className="container">
       <form className="form" onSubmit={handleSubmit}>
         <span className="input-span">
           <label htmlFor="username" className="label">
@@ -77,7 +77,7 @@ export default function LoginForm() {
         <input className="submit" type="submit" value="Log in" />
         {/*There should be some error handling here*/}
         <span className="span">
-          No account? <a href="#">Sign up</a>
+          No account? <a href="/signup">Sign up</a>
         </span>
       </form>
     </div>

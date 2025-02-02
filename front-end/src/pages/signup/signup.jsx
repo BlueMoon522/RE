@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import "./signup.styles.css";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function SignupForm({ className, ...props }) {
+export default function SignupForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [reenterPassword, setReenterPassword] = useState("");
@@ -49,61 +50,54 @@ export default function SignupForm({ className, ...props }) {
   };
 
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card>
-        <CardHeader className="text-center">
-          <CardTitle className="text-xl">Welcome</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit}>
-            <div className="grid gap-6">
-              <div className="grid gap-6">
-                <div className="grid gap-2">
-                  <Label htmlFor="username">Username</Label>
-                  <Input
-                    id="username"
-                    type="text"
-                    placeholder="Write your goddamn name"
-                    required
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="password">Password</Label>
-                  <Input
-                    id="password"
-                    type="password"
-                    required
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="reenter-password">Re-enter Password</Label>
-                  <Input
-                    id="reenter-password"
-                    type="password"
-                    required
-                    value={reenterPassword}
-                    onChange={(e) => setReenterPassword(e.target.value)}
-                  />
-                </div>
-                {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
-                <Button type="submit" className="w-full">
-                  Signup
-                </Button>
-              </div>
-              <div className="text-center text-sm">
-                Already have an account?{" "}
-                <a href="/login" className="underline underline-offset-4">
-                  Login
-                </a>
-              </div>
-            </div>
-          </form>
-        </CardContent>
-      </Card>
+    <div className="container">
+      <form className="form" onSubmit={handleSubmit}>
+        <span className="input-span">
+          <label htmlFor="username" className="label">
+            UserName
+          </label>
+          <input
+            id="username"
+            type="text"
+            placeholder="Enter your username"
+            required
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+        </span>
+        <span className="input-span">
+          <label htmlFor="password" className="label">
+            Password
+          </label>
+          <input
+            id="password"
+            type="password"
+            required
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </span>
+        <span className="input-span">
+          <label htmlFor="password" className="label">
+            Re-Enter Password
+          </label>
+          <input
+            id="password"
+            type="password"
+            required
+            value={reenterPassword}
+            onChange={(e) => setReenterPassword(e.target.value)}
+          />
+        </span>
+        <span className="span">
+          <a href="#">Forgot password?</a>
+        </span>
+        <input className="submit" type="submit" value="Signup" />
+        {/*There should be some error handling here*/}
+        <span className="span">
+          Have an account? <a href="/login"> Login</a>
+        </span>
+      </form>
     </div>
   );
 }
