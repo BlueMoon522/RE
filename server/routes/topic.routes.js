@@ -6,6 +6,7 @@ import {
   userTopics,
   userPublicTopics,
   bookmarkTopics,
+  getQuestions,
 } from "../controllers/topic.controller.js";
 import { protectedRoutes } from "../middleware/protectedRoutes.js";
 
@@ -15,6 +16,7 @@ router.post("/bookmark/:id", protectedRoutes, bookmarkTopics);
 router.post("/", protectedRoutes, topicCreate);
 router.post("/:id", protectedRoutes, updateTopic);
 router.get("/", protectedRoutes, userTopics);
+router.get("/question", protectedRoutes, getQuestions);
 router.get("/public", protectedRoutes, userPublicTopics);
 router.delete("/:id", protectedRoutes, deleteTopic);
 

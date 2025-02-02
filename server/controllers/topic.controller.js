@@ -169,3 +169,36 @@ export const bookmarkTopics = async (req, res) => {
     return res.status(500).json({ error: "Server Error" });
   }
 };
+//to get all the question of all the topics of the current user
+export const getQuestions = async (req, res) => {
+  console.log("Inside the getQuestions function");
+  try {
+    const user = req.user._id;
+
+    //finding all the topics with the userId
+    const topics = await Topic.find({ user: user });
+    const topicIds = topics.map((topic) => {
+      return topic.id;
+    });
+    console.log(topicIds);
+    console.log(topicIds.length);
+    let question = [];
+    for (let i = 0; i <= topicIds.length - 1; i++) {
+      console.log("inside the loop");
+      let content = await Content.findOne({ topicId: topicIds[i] });
+      console.log("here is the content");
+      console.log(content);
+      console.log("here  content ends");
+      if (content) {
+        question = question.concat(content.questions); // Use concat to merge arrays
+      }
+    }
+    if (!topics) {
+      return res.status(404).json({ message: "No topics found" });
+    }
+    return res.status(201).json(question);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "Server Error" });
+  }
+};
