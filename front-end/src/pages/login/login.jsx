@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import PropTypes from "prop-types";
 import "./login.styles.css";
 
 export default function LoginForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  //i should do something with the error
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
@@ -75,8 +75,9 @@ export default function LoginForm() {
           <a href="#">Forgot password?</a>
         </span>
         <input className="submit" type="submit" value="Log in" />
+        {/*There should be some error handling here*/}
         <span className="span">
-          Don't have an account? <a href="#">Sign up</a>
+          No account? <a href="#">Sign up</a>
         </span>
       </form>
     </div>
