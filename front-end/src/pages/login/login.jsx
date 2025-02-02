@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import PropTypes from "prop-types";
+import "./login.styles.css";
 
-export default function LoginForm({ className, ...props }) {
+export default function LoginForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -42,79 +44,41 @@ export default function LoginForm({ className, ...props }) {
   };
 
   return (
-    <div
-      className={`flex justify-center items-center min-h-screen bg-gray-50 ${className}`}
-      {...props}
-    >
-      <div className="w-full max-w-md p-8 bg-white shadow-lg rounded-lg">
-        <h2 className="text-2xl font-bold text-center mb-6">Login</h2>
-
-        {/* Login Form */}
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Username Field */}
-          <div>
-            <label
-              htmlFor="username"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Username
-            </label>
-            <input
-              id="username"
-              type="text"
-              placeholder="Enter your username"
-              required
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              className="mt-2 block w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-
-          {/* Password Field */}
-          <div>
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Password
-            </label>
-            <input
-              id="password"
-              type="password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="mt-2 block w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-
-          {/* Error Message */}
-          {error && (
-            <p className="text-red-500 text-sm mt-1 text-center">{error}</p>
-          )}
-
-          {/* Submit Button */}
-          <div>
-            <button
-              type="submit"
-              className="w-full bg-blue-500 text-white py-3 rounded-md shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              Login
-            </button>
-          </div>
-        </form>
-
-        {/* Signup Redirect */}
-        <div className="text-center text-sm mt-4">
-          Don't have an account?{" "}
-          <a
-            href="/signup"
-            className="underline text-blue-500 hover:text-blue-600"
-          >
-            Sign up
-          </a>
-        </div>
-      </div>
+    <div>
+      <form className="form" onSubmit={handleSubmit}>
+        <span className="input-span">
+          <label htmlFor="username" className="label">
+            UserName
+          </label>
+          <input
+            id="username"
+            type="text"
+            placeholder="Enter your username"
+            required
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+        </span>
+        <span className="input-span">
+          <label htmlFor="password" className="label">
+            Password
+          </label>
+          <input
+            id="password"
+            type="password"
+            required
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </span>
+        <span className="span">
+          <a href="#">Forgot password?</a>
+        </span>
+        <input className="submit" type="submit" value="Log in" />
+        <span className="span">
+          Don't have an account? <a href="#">Sign up</a>
+        </span>
+      </form>
     </div>
   );
 }

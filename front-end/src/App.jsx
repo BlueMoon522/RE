@@ -33,13 +33,13 @@ function App() {
   });
 
   return (
-    <div className="app-container">
+    <div>
       {authuser && (
-        <div className="sidebar-container">
+        <div>
           <Sidebar />
         </div>
       )}
-      <div className="main-content">
+      <div>
         <Routes>
           <Route
             path="/"
