@@ -42,7 +42,8 @@ const contentSchema = new mongoose.Schema(
       type: [questionSchema],
     },
     subcontent: {
-      type: [contentSchema], //to make it a subtopic
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "content",
     },
     // question: {
     //   type: String,
