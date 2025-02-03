@@ -5,13 +5,13 @@ import Signup from "./pages/signup/signup.jsx";
 import Submit from "./pages/submit/page";
 import YourPage from "./pages/test/page";
 import EditorPage from "./pages/editor/editor";
-import Sidebar from "./components/common/sidebar/side-bar.jsx";
 import UserPostPage from "./pages/createtitle/page";
 import ContentPage from "./pages/contentpage/page";
 import Public from "./pages/public/public";
 import { useQuery } from "@tanstack/react-query";
 import "./App.css";
 import Bookmarks from "./pages/bookmarks/bookmarks.jsx";
+import TopBar from "./components/common/topbar/topbar.jsx";
 
 function App() {
   const { data: authuser } = useQuery({
@@ -33,13 +33,13 @@ function App() {
   });
 
   return (
-    <div>
+    <div className="page">
       {authuser && (
-        <div>
-          <Sidebar />
+        <div className="topbar">
+          <TopBar />
         </div>
       )}
-      <div>
+      <div className="content">
         <Routes>
           <Route
             path="/"

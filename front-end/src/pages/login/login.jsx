@@ -33,6 +33,7 @@ export default function LoginForm() {
         const result = await response.json();
         console.log("Login successful:", result);
         navigate("/"); // Redirect to home page upon successful login
+        window.location.reload(); // Refresh the page after navigation
       } else {
         const errorText = await response.text();
         setError("Login failed: " + errorText); // Show error message from backend
