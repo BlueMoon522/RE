@@ -202,3 +202,23 @@ export const getQuestions = async (req, res) => {
     return res.status(500).json({ error: "Server Error" });
   }
 };
+
+export const searchTopics = async (req, res) => {
+  console.log("inside searchTopics");
+  try {
+    const title = req.params.name;
+    console.log(title);
+    //using regex to search for all the cases.I.e regardless of uppercase and lowercase and such
+    const topics = await Topic.find({
+      title: { $regex: new RegExp(title, "i") },
+    }).lean(); //lean to convert to plain js objects
+    if (!topics || topics.length === 0) {
+      return res.status(404).json({ message: "No topics found" });
+    }
+    console.log(topics);
+    return res.status(200).json(topics);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
