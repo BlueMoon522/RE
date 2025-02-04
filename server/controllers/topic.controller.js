@@ -203,6 +203,7 @@ export const getQuestions = async (req, res) => {
   }
 };
 
+//function to search for the topic
 export const searchTopics = async (req, res) => {
   console.log("inside searchTopics");
   try {

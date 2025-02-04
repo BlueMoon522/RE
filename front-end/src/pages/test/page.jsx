@@ -1,10 +1,8 @@
-import Toggle from "../../components/common/toggle/toggle";
-import TopBar from "../../components/common/topbar/topbar";
-import TableOfContents from "../../components/common/tableofcontent/toc";
+import Home from "../home/Home.jsx";
 export default function Test() {
   return (
     <>
-      <TableOfContents />
+      <Home />
     </>
   );
 }

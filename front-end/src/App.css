@@ -1,11 +1,6 @@
 .page {
   display: flex;
   flex-direction: column;
-  display: flex;
-  justify-content: space-around;
-  min-height: 100vh;
-  overflow-y: auto;
-  /* This makes the whole page scrollable */
 }
 
 .topbar {
@@ -13,22 +8,23 @@
   justify-content: space-around;
   padding: 10px;
   position: fixed;
-  /* Fixed position to stay at the top */
-  top: 2%;
-  /* Position at the top of the page */
+  top: 0;
+  /* Make sure it stays at the very top */
   left: 0;
-  /* Align to the left */
   width: 100%;
-  /* Ensure the top bar spans the full width */
   z-index: 1000;
+  border-style: solid;
+  background-color: white;
+  /* Ensure it doesn't blend with the content */
+  height: 60px;
+  /* Adjust as needed */
 }
 
 .content {
-  flex-grow: 1;
-  /* Allows content to expand within available space */
-  border-style: solid;
-  overflow: auto;
-  background-color: #ffffff;
-  /* Ensures it doesn't overflow */
+  margin-top: 60px;
+  /* Same as .topbar height to prevent overlap */
   padding: 1rem;
+  border-style: solid;
+  background-color: #ffffff;
+  flex: 1;
 }
