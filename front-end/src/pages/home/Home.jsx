@@ -27,27 +27,29 @@ const HomePage = () => {
   console.log("uid is here", UID);
 
   useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const response = await fetch("/api/user/post/", {
-          method: "GET",
-          credentials: "include",
-        });
+    if (UID) {
+      const fetchPosts = async () => {
+        try {
+          const response = await fetch("/api/user/post/", {
+            method: "GET",
+            credentials: "include",
+          });
 
-        if (!response.ok) {
-          throw new Error("Failed to fetch posts");
+          if (!response.ok) {
+            throw new Error("Failed to fetch posts");
+          }
+
+          const data = await response.json();
+          setPosts(Array.isArray(data) ? data : []);
+        } catch (err) {
+          console.error(err.message || "An unknown error occurred.");
+          setError("Failed to load post.");
         }
+      };
 
-        const data = await response.json();
-        setPosts(Array.isArray(data) ? data : []);
-      } catch (err) {
-        console.error(err.message || "An unknown error occurred.");
-        setError("Failed to load post.");
-      }
-    };
-
-    fetchPosts();
-  }, []);
+      fetchPosts();
+    }
+  }, [UID]);
   console.log("posts are here:", posts);
 
   const handleFormSubmit = async (e) => {
@@ -126,16 +128,18 @@ const HomePage = () => {
         {error ? (
           <div className="error">{error}</div>
         ) : posts.length > 0 ? (
-          posts.map((post, index) => (
-            <Card
-              key={index}
-              title={post.title}
-              description={post.content}
-              id={post._id}
-              handleEdit={() => handleEditClick(post)}
-              userId={post.user}
-            />
-          ))
+          posts.map((post) =>
+            post ? (
+              <Card
+                key={post._id || post.title}
+                title={post.title || "Untitled"}
+                description={post.content || "No content available"}
+                id={post._id}
+                handleEdit={() => handleEditClick(post)}
+                userId={post.user}
+              />
+            ) : null,
+          )
         ) : (
           <p className="no-posts">No posts available.</p>
         )}

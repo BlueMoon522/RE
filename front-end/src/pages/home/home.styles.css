@@ -1,10 +1,15 @@
-/* General Styles */
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
 .container {
-  min-height: 100vh;
-  background-color: #f9fafb;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow: auto;
   font-family: sans-serif;
-  padding: 0 2rem;
-  /* Add padding for better layout */
 }
 
 /* Header */
@@ -36,24 +41,17 @@
   background-color: #2563eb;
 }
 
-/* Grid Container */
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 1rem;
-  /* Adjust gap for better spacing on smaller screens */
-  margin-top: 1.5rem;
-  /* Add margin for better separation */
+  padding: 1.5rem;
 }
 
-/* Post Card */
 .post-card {
-  background-color: white;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-  padding: 1.5rem;
-  /* Adjust padding for better spacing */
-  position: relative;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .post-title {
@@ -95,7 +93,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 50;
+  z-index: 999;
+  /* Ensure it's above other content */
 }
 
 .modal-form {
