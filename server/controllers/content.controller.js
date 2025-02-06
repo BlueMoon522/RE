@@ -37,6 +37,40 @@ export const postContent = async (req, res) => {
   }
 };
 
+//post content as subtent of another content
+export const postAsSubContent = async (req, res) => {
+  console.log("Inside the postContent function");
+  const { title, description, questions } = req.body;
+  try {
+    const topicId = req.params.id;
+    const userId = req.user._id.toString();
+    console.log("userID", userId);
+    const existingTopic = await Topic.findById(topicId);
+    console.log("topic userID", existingTopic.user.toString());
+    if (existingTopic.user != userId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+    if (!existingTopic || !topicId) {
+      return res.status(404).json({ message: "Topic not found" });
+    }
+    const newTopic = new Content({
+      user: userId,
+      topicId: topicId,
+      title,
+      description,
+      questions,
+    });
+
+    if (newTopic) {
+      await newTopic.save();
+      return res.status(201).json({ newTopic: newTopic.title });
+    } else {
+      return res.status(400).json({ error: "invalid data" });
+    }
+  } catch (error) {
+    return res.status(500).json({ error: "Server Error" });
+  }
+};
 //get  all the contentmethod
 export const getAllContent = async (req, res) => {
   console.log("Inside the getContent function");

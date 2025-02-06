@@ -48,6 +48,24 @@ export const userTopics = async (req, res) => {
     return res.status(500).json({ error: "Server Error" });
   }
 };
+//getAllusers topics including subtopic
+export const userTopicsComplete = async (req, res) => {
+  console.log("in function of topic.userTopics");
+  //req.user._id gives the userId that i have in a cookie
+  try {
+    const post = await Topic.find({
+      user: req.user._id,
+    });
+    if (post.length === 0 || !post) {
+      return res.status(200).json({
+        message: "No topics posted yet",
+      });
+    }
+    return res.status(200).json(post);
+  } catch (error) {
+    return res.status(500).json({ error: "Server Error" });
+  }
+};
 //update the topic
 export const updateTopic = async (req, res) => {
   console.log("In update Topic function");
