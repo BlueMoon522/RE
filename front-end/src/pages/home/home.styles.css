@@ -1,31 +1,26 @@
 html,
 body {
-  height: 100%;
-  margin: 0;
+  height: 100em;
 }
 
-.container {
+.wrapper {
   display: flex;
   flex-direction: column;
-  width: 100%;
-  overflow: auto;
-  font-family: sans-serif;
+  border-style: solid;
+  align-items: center;
+  gap: 2em;
 }
 
-/* Header */
 .header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 1.5rem 0;
-  /* Adjust padding for better spacing */
-  border-bottom: 1px solid #d1d5db;
+  justify-content: space-between;
+  width: 100%;
 }
 
-.header h1 {
-  font-size: 2rem;
-  font-family: serif;
-  color: #1f2937;
+.logo {
+  height: 10em;
+  width: 15em;
 }
 
 .new-button {
@@ -39,50 +34,6 @@ body {
 
 .new-button:hover {
   background-color: #2563eb;
-}
-
-.grid-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1rem;
-  padding: 1.5rem;
-}
-
-.post-card {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.post-title {
-  color: #1f2937;
-  font-weight: 500;
-  font-size: 1.125rem;
-  margin-bottom: 8px;
-}
-
-.post-content {
-  color: #6b7280;
-  font-size: 0.875rem;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-}
-
-.post-buttons {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 1rem;
-  /* Adjust margin for better spacing */
-}
-
-.post-buttons button {
-  color: #3b82f6;
-  font-size: 0.875rem;
-  text-decoration: underline;
-  cursor: pointer;
 }
 
 /* Modal */

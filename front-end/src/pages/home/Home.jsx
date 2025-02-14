@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Card from "../../components/common/card/card.jsx";
 import "./home.styles.css";
 import getUID from "../../hooks/getuserId.jsx";
+import logo from "../../../public/logo/UNGA_BUNGA.svg";
 
 const HomePage = () => {
   // (State management code remains the same)
@@ -115,62 +116,37 @@ const HomePage = () => {
   };
 
   return (
-    <div className="container">
+    <div className="wrapper">
       {/* Header */}
       <div className="header">
-        <h1>UngaBunga-Notes</h1>
-        <button onClick={handleNewPostClick} className="new-button">
-          New
-        </button>
+        <div className="logo">
+          <img src={logo} alt="logo" />
+        </div>
+        <div>
+          <button onClick={handleNewPostClick} className="new-button">
+            New
+          </button>
+        </div>
       </div>
       {/*Using cards*/}
-      <div className="grid-container">
-        {error ? (
-          <div className="error">{error}</div>
-        ) : posts.length > 0 ? (
-          posts.map((post) =>
-            post ? (
-              <Card
-                key={post._id || post.title}
-                title={post.title || "Untitled"}
-                description={post.content || "No content available"}
-                id={post._id}
-                handleEdit={() => handleEditClick(post)}
-                userId={post.user}
-              />
-            ) : null,
-          )
-        ) : (
-          <p className="no-posts">No posts available.</p>
-        )}
-      </div>
-      {/* Content */}
-      {/*this renders the samething that Card component does*/}
-      {/*
-      <div className="grid-container">
-        {error ? (
-          <div className="error">{error}</div>
-        ) : posts.length > 0 ? (
-          posts.map((post) => (
-            <div key={post._id} className="post-card">
-              <div>
-                <h3 className="post-title">{post.title}</h3>
-                <p className="post-content">{post.content}</p>
-              </div>
-              <div className="post-buttons">
-                <button onClick={() => navigate(`/content/${post._id}`)}>
-                  View
-                </button>
-                <button onClick={() => handleEditClick(post)}>Edit</button>
-                <button>Delete</button>
-              </div>
-            </div>
-          ))
-        ) : (
-          <p className="no-posts">No posts available.</p>
-        )}
-      </div>
-      */}
+      {error ? (
+        <div className="error">{error}</div>
+      ) : posts.length > 0 ? (
+        posts.map((post) =>
+          post ? (
+            <Card
+              key={post._id || post.title}
+              title={post.title || "Untitled"}
+              description={post.content || "No content available"}
+              id={post._id}
+              handleEdit={() => handleEditClick(post)}
+              userId={post.user}
+            />
+          ) : null,
+        )
+      ) : (
+        <p className="no-posts">No posts available.</p>
+      )}
 
       {/* Modal */}
       {isFormVisible && (
