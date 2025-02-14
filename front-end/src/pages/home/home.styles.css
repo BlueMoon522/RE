@@ -6,7 +6,6 @@ body {
 .wrapper {
   display: flex;
   flex-direction: column;
-  border-style: solid;
   align-items: center;
   gap: 2em;
 }
@@ -78,4 +77,28 @@ body {
 .modal-form .buttons {
   display: flex;
   justify-content: space-between;
+}
+
+@media (min-width: 950px) {
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Card container to distribute cards across the screen */
+  .card-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    gap: 10em;
+    width: 100%;
+  }
+
+  .card {
+    flex: 1 1 300px;
+    /* Grow/shrink cards while keeping minimum width */
+    max-width: 400px;
+    /* Prevent too wide cards */
+  }
 }

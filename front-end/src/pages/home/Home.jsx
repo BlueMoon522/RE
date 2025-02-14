@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Card from "../../components/common/card/card.jsx";
 import "./home.styles.css";
 import getUID from "../../hooks/getuserId.jsx";
-import logo from "../../../public/logo/UNGA_BUNGA.svg";
+import logo from "../../assets/logo/UNGA_BUNGA.svg";
 
 const HomePage = () => {
   // (State management code remains the same)
@@ -129,24 +129,26 @@ const HomePage = () => {
         </div>
       </div>
       {/*Using cards*/}
-      {error ? (
-        <div className="error">{error}</div>
-      ) : posts.length > 0 ? (
-        posts.map((post) =>
-          post ? (
-            <Card
-              key={post._id || post.title}
-              title={post.title || "Untitled"}
-              description={post.content || "No content available"}
-              id={post._id}
-              handleEdit={() => handleEditClick(post)}
-              userId={post.user}
-            />
-          ) : null,
-        )
-      ) : (
-        <p className="no-posts">No posts available.</p>
-      )}
+      <div className="card-container">
+        {error ? (
+          <div className="error">{error}</div>
+        ) : posts.length > 0 ? (
+          posts.map((post) =>
+            post ? (
+              <Card
+                key={post._id || post.title}
+                title={post.title || "Untitled"}
+                description={post.content || "No content available"}
+                id={post._id}
+                handleEdit={() => handleEditClick(post)}
+                userId={post.user}
+              />
+            ) : null,
+          )
+        ) : (
+          <p className="no-posts">No posts available.</p>
+        )}
+      </div>
 
       {/* Modal */}
       {isFormVisible && (
