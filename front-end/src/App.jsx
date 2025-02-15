@@ -14,7 +14,7 @@ import Bookmarks from "./pages/bookmarks/bookmarks.jsx";
 import TopBar from "./components/common/topbar/topbar.jsx";
 
 function App() {
-  const { data: authuser } = useQuery({
+  const { data: authuser, isLoading } = useQuery({
     queryKey: ["authuser"],
     queryFn: async () => {
       try {
@@ -27,10 +27,15 @@ function App() {
         console.log("authuser data", data);
         return data;
       } catch (error) {
-        alert(error);
+        console.error(error);
+        return null;
       }
     },
   });
+
+  if (isLoading) {
+    return <div className="loading">Loading...</div>;
+  }
 
   return (
     <div className="wrapper">
@@ -43,7 +48,17 @@ function App() {
         <Routes>
           <Route
             path="/"
-            element={authuser ? <Home /> : <Navigate to="login" />}
+            element={
+              authuser !== undefined ? (
+                authuser ? (
+                  <Home />
+                ) : (
+                  <Navigate to="/login" />
+                )
+              ) : (
+                <div className="loading">Loading...</div>
+              )
+            }
           />
           {/*These are just test routes so they are not protected*/}
           <Route path="/test" element={<YourPage />} />
@@ -51,23 +66,73 @@ function App() {
           {/**/}
           <Route
             path="/public"
-            element={authuser ? <Public /> : <Navigate to="/login" />}
+            element={
+              authuser !== undefined ? (
+                authuser ? (
+                  <Public />
+                ) : (
+                  <Navigate to="/login" />
+                )
+              ) : (
+                <div className="loading">Loading...</div>
+              )
+            }
           />
           <Route
             path="/bookmarks"
-            element={authuser ? <Bookmarks /> : <Navigate to="/login" />}
+            element={
+              authuser !== undefined ? (
+                authuser ? (
+                  <Bookmarks />
+                ) : (
+                  <Navigate to="/login" />
+                )
+              ) : (
+                <div className="loading">Loading...</div>
+              )
+            }
           />
           <Route
             path="/content/:id"
-            element={authuser ? <ContentPage /> : <Navigate to="/login" />}
+            element={
+              authuser !== undefined ? (
+                authuser ? (
+                  <ContentPage />
+                ) : (
+                  <Navigate to="/login" />
+                )
+              ) : (
+                <div className="loading">Loading...</div>
+              )
+            }
           />
           <Route
             path="/title"
-            element={authuser ? <UserPostPage /> : <Navigate to="/login" />}
+            element={
+              authuser !== undefined ? (
+                authuser ? (
+                  <UserPostPage />
+                ) : (
+                  <Navigate to="/login" />
+                )
+              ) : (
+                <div className="loading">Loading...</div>
+              )
+            }
           />
           <Route
             path="/submit/:id"
-            element={authuser ? <Submit /> : <Navigate to="/login" />}
+            element={
+              authuser !== undefined ? (
+                authuser ? (
+                  <Submit />
+                ) : (
+                  <Navigate to="/login" />
+                )
+              ) : (
+                <div className="loading">Loading...</div>
+              )
+            }
           />
           <Route
             path="/signup"
