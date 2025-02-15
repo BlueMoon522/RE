@@ -3,6 +3,7 @@ import Card from "../../components/common/card/card.jsx";
 import "./home.styles.css";
 import getUID from "../../hooks/getuserId.jsx";
 import logo from "../../assets/logo/UNGA_BUNGA.svg";
+import book from "../../assets/images/book.jpg";
 
 const HomePage = () => {
   // (State management code remains the same)
@@ -117,18 +118,16 @@ const HomePage = () => {
 
   return (
     <div className="wrapper">
-      {/* Header */}
-      <div className="header">
-        <div className="logo">
-          <img src={logo} alt="logo" />
-        </div>
-        <div>
-          <button onClick={handleNewPostClick} className="new-button">
-            New
-          </button>
+      <div className="imageAndText">
+        <p className="text">Write your Notes in documentation style</p>
+        <div className="image">
+          <img src={book} alt="image of book" />
         </div>
       </div>
       {/*Using cards*/}
+      <button onClick={handleNewPostClick} className="new-button">
+        New
+      </button>
       <div className="card-container">
         {error ? (
           <div className="error">{error}</div>

@@ -10,16 +10,37 @@ body {
   gap: 2em;
 }
 
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+.logo {
+  height: 10em;
   width: 100%;
 }
 
-.logo {
-  height: 10em;
-  width: 15em;
+.imageAndText {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.image {
+  width: 100%;
+  height: 60vh;
+  /* Adjust as needed */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 60px;
+  /* Same height as the .topbar */
+}
+
+.text {
+  font-style: italic;
+  color: black;
+}
+
+.image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Ensures the image fills the space properly */
 }
 
 .new-button {

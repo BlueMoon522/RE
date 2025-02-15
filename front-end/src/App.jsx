@@ -33,7 +33,7 @@ function App() {
   });
 
   return (
-    <div className="page">
+    <div className="wrapper">
       {authuser && (
         <div className="topbar">
           <TopBar />

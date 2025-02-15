@@ -12,7 +12,7 @@ dotenv.config();
 const app = express();
 app.use(
   cors({
-    origin: "http://localhost:5173", //if u dont set origin it doesnot work??IDK why
+    // origin: "http://localhost:5173", //if u dont set origin it doesnot work??IDK why
     credentials: true, //to send and receive cookie
   }),
 );

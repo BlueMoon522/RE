@@ -20,7 +20,6 @@
 }
 
 .content {
-  margin-top: 60px;
   /* Same as .topbar height to prevent overlap */
   padding: 1rem;
   background-color: #ffffff;
