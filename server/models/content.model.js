@@ -41,10 +41,12 @@ const contentSchema = new mongoose.Schema(
     questions: {
       type: [questionSchema],
     },
-    subcontent: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "content",
-    },
+    subcontent: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "content",
+      },
+    ],
     // question: {
     //   type: String,
     // },
