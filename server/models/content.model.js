@@ -8,7 +8,7 @@ const questionSchema = new mongoose.Schema({
   answer: {
     type: String,
     validate: {
-      validator: function(value) {
+      validator: function (value) {
         //if part 1 is provided ,part 2 must be provided
         return !this.question || (this.question && value);
         // return !this.part1 || (this.part1 && value);
@@ -41,12 +41,9 @@ const contentSchema = new mongoose.Schema(
     questions: {
       type: [questionSchema],
     },
-    subcontent: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "content",
-      },
-    ],
+    subcontent: {
+      type: [String],
+    },
     // question: {
     //   type: String,
     // },

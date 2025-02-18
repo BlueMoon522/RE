@@ -37,40 +37,6 @@ export const postContent = async (req, res) => {
   }
 };
 
-//post content as subtent of another content
-export const postAsSubContent = async (req, res) => {
-  console.log("Inside the postContent function");
-  const { title, description, questions } = req.body;
-  try {
-    const topicId = req.params.id;
-    const userId = req.user._id.toString();
-    console.log("userID", userId);
-    const existingTopic = await Topic.findById(topicId);
-    console.log("topic userID", existingTopic.user.toString());
-    if (existingTopic.user != userId) {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
-    if (!existingTopic || !topicId) {
-      return res.status(404).json({ message: "Topic not found" });
-    }
-    const newTopic = new Content({
-      user: userId,
-      topicId: topicId,
-      title,
-      description,
-      questions,
-    });
-
-    if (newTopic) {
-      await newTopic.save();
-      return res.status(201).json({ newTopic: newTopic.title });
-    } else {
-      return res.status(400).json({ error: "invalid data" });
-    }
-  } catch (error) {
-    return res.status(500).json({ error: "Server Error" });
-  }
-};
 //get  all the contentmethod
 export const getAllContent = async (req, res) => {
   console.log("Inside the getContent function");
@@ -142,13 +108,13 @@ export const getCurrentContent = async (req, res) => {
   }
 };
 
-//update the content
+//update the content also add the sub-content
 export const updateContent = async (req, res) => {
   console.log("In update content function");
   try {
     const userId = req.user._id.toString();
     console.log("userId", userId);
-    let { title, description, questions } = req.body;
+    let { title, description, questions, subcontent } = req.body;
     const ID = req.params.id;
     //finding content by id
     let content = await Content.findById(ID);
@@ -164,6 +130,12 @@ export const updateContent = async (req, res) => {
     content.title = title || content.title;
     content.description = description || content.description;
     content.questions = questions || content.questions;
+    //ensure subcontent is an array
+    if (Array.isArray(subcontent)) {
+      content.subcontent = [...new Set([...content.subcontent, ...subcontent])]; // Prevent duplicates
+    }
+
+    // content.subcontent = subcontent || content.subcontent;
 
     content = await content.save();
 
