@@ -12,6 +12,7 @@ import { useQuery } from "@tanstack/react-query";
 import "./App.css";
 import Bookmarks from "./pages/bookmarks/bookmarks.jsx";
 import TopBar from "./components/common/topbar/topbar.jsx";
+import Landing from "./pages/landingpage/landing.jsx";
 
 function App() {
   const { data: authuser, isLoading } = useQuery({
@@ -47,13 +48,17 @@ function App() {
       <div className="content">
         <Routes>
           <Route
+            path="/home"
+            element={!authuser ? <Landing /> : <Navigate to="/" />}
+          />
+          <Route
             path="/"
             element={
               authuser !== undefined ? (
                 authuser ? (
                   <Home />
                 ) : (
-                  <Navigate to="/login" />
+                  <Navigate to="/home" />
                 )
               ) : (
                 <div className="loading">Loading...</div>
@@ -71,7 +76,7 @@ function App() {
                 authuser ? (
                   <Public />
                 ) : (
-                  <Navigate to="/login" />
+                  <Navigate to="/home" />
                 )
               ) : (
                 <div className="loading">Loading...</div>
@@ -85,7 +90,7 @@ function App() {
                 authuser ? (
                   <Bookmarks />
                 ) : (
-                  <Navigate to="/login" />
+                  <Navigate to="/home" />
                 )
               ) : (
                 <div className="loading">Loading...</div>

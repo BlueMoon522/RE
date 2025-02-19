@@ -21,6 +21,7 @@
 
 .content {
   /* Same as .topbar height to prevent overlap */
+  display: flex;
   padding: 1rem;
   background-color: #ffffff;
   flex: 1;
