@@ -1,11 +1,24 @@
+import { Link } from "react-router-dom";
 import book from "../../assets/images/book.jpg";
+import "./landing.modules.css";
 
 export default function Landing() {
   return (
     <div className="wrapper-landing">
-      <p>This is a landing page</p>
       <div className="topbar-landing">
-        <p>Topbar</p>
+        <p>Unnga-Bunga Notes</p>
+        <div>
+          <div className="buttons-landing">
+            <Link to="/signup">
+              <button>Signup</button>
+            </Link>
+          </div>
+          <div className="buttons-landing">
+            <Link to="/login">
+              <button>login</button>
+            </Link>
+          </div>
+        </div>
       </div>
       <div className="imageAndText">
         <p className="text">Write your Notes in documentation style</p>

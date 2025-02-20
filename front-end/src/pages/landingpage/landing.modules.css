@@ -1,7 +1,19 @@
-.wrapper {
+.wrapper-landing {
   display: flex;
-  align-items: column;
+  flex-direction: column;
   border-style: solid;
   height: 100vh;
+  width: 100%;
   overflow: hidden;
+}
+
+.topbar-landing {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.buttons-landing {
+  display: flex;
+  background-color: red;
 }
