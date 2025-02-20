@@ -37,7 +37,8 @@ export const postContent = async (req, res) => {
   }
 };
 
-//get  all the contentmethod
+//get  all the contents method
+//this is stupid thing,shows all the contents in database.
 export const getAllContent = async (req, res) => {
   console.log("Inside the getContent function");
   try {
@@ -95,11 +96,21 @@ export const getCurrentContent = async (req, res) => {
     // if (!mongoose.Types.ObjectId.isValid(topicId)) {
     //   return res.status(400).json({ message: "Invalid topicId format" });
     // }
-    const contents = await Content.findById(contentID);
+    const contents = await Content.findById(contentID).lean(); //converting to plain js object
     if (!contents || contents.length === 0) {
       return res.status(404).json({ message: "No content found" });
     }
+    // Recursively fetch subcontent
 
+    if (contents.subcontent && contents.subcontent.length > 0) {
+      const subcontentPromises = contents.subcontent.map(async (subId) => {
+        const subContent = await Content.findById(subId).lean();
+        return subContent || null;
+      });
+
+      const resolvedSubcontent = await Promise.all(subcontentPromises);
+      contents.subcontent = resolvedSubcontent.filter((item) => item !== null);
+    }
     console.log(contents);
     return res.status(201).json(contents);
   } catch (error) {
@@ -108,7 +119,7 @@ export const getCurrentContent = async (req, res) => {
   }
 };
 
-//update the content also add the sub-content
+//update the content also  and also add the sub-content
 export const updateContent = async (req, res) => {
   console.log("In update content function");
   try {
