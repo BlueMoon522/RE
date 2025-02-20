@@ -118,12 +118,6 @@ const HomePage = () => {
 
   return (
     <div className="wrapper">
-      <div className="imageAndText">
-        <p className="text">Write your Notes in documentation style</p>
-        <div className="image">
-          <img src={book} alt="image of book" />
-        </div>
-      </div>
       {/*Using cards*/}
       <button onClick={handleNewPostClick} className="new-button">
         New

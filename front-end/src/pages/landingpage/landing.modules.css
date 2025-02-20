@@ -1,4 +1,7 @@
 .wrapper {
   display: flex;
   align-items: column;
+  border-style: solid;
+  height: 100vh;
+  overflow: hidden;
 }

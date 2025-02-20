@@ -25,4 +25,8 @@
   padding: 1rem;
   background-color: #ffffff;
   flex: 1;
+  width: 100%;
+  border-style: solid;
+  box-sizing: border-box;
+  /* Includes padding and border in width calculation */
 }
